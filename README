@@ -1,0 +1,65 @@
+/**********************************************************
+* HW3: Metro Simulator
+* Comp 15
+* README
+* Deanna Oei 
+* September 30, 2020
+*********************************************************/
+
+Compile/run:
+     - Compile using
+            make MetroSim
+     - run executable with
+            ./MetroSim stationsFile passFile [commands]
+
+
+Program Purpose:
+
+This homework assignment handles a running train to accomodate
+passengers arriving/departing a metro. Learn how to design and
+modularize code and work with documented libraries.
+
+
+Acknowledgements: 
+
+
+Files: 
+
+main.cpp:
+     STUDENT TO-DO: Main file should be short and handle simple driver
+     functions such as reading in files.
+
+MetroSim.cpp:
+     STUDENT TO-DO: Implementation of MetroSim class.  Main
+     functionality of running the Metro Simulation, should be able to
+     move trains and deal with passengers going on/off the train.
+
+MetroSim.h:
+        STUDENT TO-DO: Interface of MetroSim class.
+
+stations.txt:
+        an example file containing a list of stations.
+
+test_commands.txt:
+        sample list of commands that you could give to the simulator
+
+the_metroSim:
+        reference implementation for students to see how 
+
+
+Note:  the program should handle all cases.
+
+Data Structures:
+
+
+Testing:
+
+Here describe the following: process of testing (unit tests), mention
+of bugs you encountered while testing, mention of testing on inputs of
+different sizes and edge cases, good description of base cases you
+considered while testing. Demonstrate a methodical approach to
+testing.  This section of your REAMDE should be very thorough for
+homework assignments.
+
+Note: This homework comes partially implemented, but student must also
+create the driver and add class functionality.
