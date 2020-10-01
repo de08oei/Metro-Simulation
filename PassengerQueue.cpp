@@ -38,7 +38,6 @@ PassengerQueue::~PassengerQueue()
 */
 int PassengerQueue::size()
 {
-    cerr << "starting with size " << inLine.size() << endl;
     return inLine.size();
 }
 
@@ -71,11 +70,13 @@ void PassengerQueue::enqueue(const Passenger &passenger) //object passed by refe
 void PassengerQueue::dequeue()
 {
     inLine.pop_back();
+    last = inLine.size() - 1;
 }
 
 void PassengerQueue::print()
 {
-    for (int i = 0; i < inLine.size(); i++) {
+    int queueSize = inLine.size();
+    for (int i = 0; i < queueSize; i++) {
         Passenger currPass = inLine.at(i);
         cout << "[" 
              << currPass.id 
