@@ -5,9 +5,13 @@ LDFLAGS  = -g3
 
 INCLUDES = $(shell echo *.h)
 EXECS    = MetroSim
+NEWEXECS = Testing 
 
 # Students will need to add other .o files
 MetroSim: main.o MetroSim.o Passenger.o PassengerQueue.o
+	${CXX} ${LDFLAGS} $^ -o $@ 
+#TestingFile: testingfile.o etc 
+Testing: testFile.cpp MetroSim.o Passenger.o PassengerQueue.o
 	${CXX} ${LDFLAGS} $^ -o $@ 
 
 %.o: %.cpp ${INCLUDES}
@@ -16,3 +20,4 @@ MetroSim: main.o MetroSim.o Passenger.o PassengerQueue.o
 .PHONY: clean
 clean:
 	rm -f ${EXECS} *.o *.dSYM./
+	rm -f ${NEWEXECS} *.o *.dSYM./

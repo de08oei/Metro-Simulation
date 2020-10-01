@@ -19,9 +19,6 @@ PassengerQueue::PassengerQueue()
     //vector<Passenger> inLine; //is this needed? it's already made 
     first = 0;
     last = 0;
-    cerr << "first: " << first << endl;
-    cerr << "last: " << last << endl;
-    
 }
 
 /* Destructor 
@@ -45,13 +42,6 @@ int PassengerQueue::size()
     return inLine.size();
 }
 
-/*
-
-
-void dequeue();
-void enqueue();
-void print();
-*/
 
 /* first
 *    Purpose: returns element at front of the queue 
@@ -60,21 +50,40 @@ void print();
 */
 Passenger PassengerQueue::front()
 {
-    return *inLine.front();
+    return inLine.front();
 }
 
-Passenger *PassengerQueue::createPassenger(int id, int from, int to)
+Passenger PassengerQueue::createPassenger(int id, int from, int to)
 {
-    Passenger *newPassenger = new Passenger;
-    newPassenger->id = id;
-    newPassenger->from = from;
-    newPassenger->to = to;
-    return newPassenger;
+    Passenger newPassenger;
+    newPassenger.id = id;
+    newPassenger.from = from;
+    newPassenger.to = to;
+    return newPassenger; 
 }
 
-void PassengerQueue::enqueue(const Passenger& passenger)
+void PassengerQueue::enqueue(const Passenger &passenger) //object passed by reference
 {
-    cerr << "capacity = " << inLine.capacity() << endl;
-    //inLine.push_back(passenger);
-    cerr << "new capacity = " << inLine.capacity() << endl;
+    inLine.push_back(passenger);
+    last = inLine.size() - 1;
+}
+
+void PassengerQueue::dequeue()
+{
+    inLine.pop_back();
+}
+
+void PassengerQueue::print()
+{
+    for (int i = 0; i < inLine.size(); i++) {
+        Passenger currPass = inLine.at(i);
+        cout << "[" 
+             << currPass.id 
+             << ", " 
+             << currPass.from 
+             << "->" 
+             << currPass.to 
+             << "]";
+    }
+    cout << endl;
 }

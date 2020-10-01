@@ -12,7 +12,5 @@ using namespace std;
  */
 void Passenger::print()
 {
-        // TODO: print the passenger information to cout
-        //       as described in the homework specification
         cout << "[" << id << ", " << from << "->" << to << "]" << endl;
 }

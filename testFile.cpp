@@ -13,6 +13,7 @@ using namespace std;
 
 //Testing functions 
 void test_createPassenger();
+void test_enque();
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
 	// instanceOne.enqueue(newPass);
 	//cout << "instance 1 id is: " << instanceOne.front().id << endl;
 	//test_createPassenger();
-	instanceOne.print();
+	//instanceOne.print();
 	return 0;
 }
 
@@ -38,6 +39,7 @@ void print();
 
 void test_enque()
 {
+    cout << "There should be 2 passengers. [1, 2->3] [2, 3->4]" << endl;
 	PassengerQueue instanceOne;
 	Passenger newPass = instanceOne.createPassenger(1,2,3);
 	instanceOne.enqueue(newPass);
