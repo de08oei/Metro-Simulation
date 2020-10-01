@@ -7,9 +7,8 @@ INCLUDES = $(shell echo *.h)
 EXECS    = MetroSim
 
 # Students will need to add other .o files
-MetroSim: main.o MetroSim.o
-	${CXX} ${LDFLAGS} $^ -o $@
-
+MetroSim: main.o MetroSim.o Passenger.o PassengerQueue.o
+	${CXX} ${LDFLAGS} $^ -o $@ 
 
 %.o: %.cpp ${INCLUDES}
 	${CXX} ${CXXFLAGS} -c -o $@ $<
