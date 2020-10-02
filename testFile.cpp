@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     // test_size();
     // test_front();
     // test_passenger_print();
-    test_initializeStations("testStations.txt");
+    // test_initializeStations("testStations.txt");
     test_getDirections("testStations.txt", "Hi");
 	return 0;
 }

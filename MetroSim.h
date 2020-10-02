@@ -27,9 +27,9 @@ public:
     
     void initializeStations(string filename);
     void getDirections(string directionsFile);
-    void askForDirections();
+    
     //void readDirections();
-    void executeDirections(string direction);
+    
     
     //temporary 
     void printMap(ostream &output);
@@ -49,13 +49,25 @@ private:
         PassengerQueue onBoard = PassengerQueue();
     };
     
+    struct instruction {
+        bool moveMetro = false;
+        bool metroFinish = false;
+        bool add = false;
+        int fromHere, toHere;
+    };
+    
+    instruction askForInstructions();
+    void executeInstructions(instruction direction);
+    
     vector<PassengerQueue> onTrain;
     vector<station> allStations;
     train theTrain;
 
-    void moveTrain();
+    void moveMetro();
     void embark();
     void disembark();
+    
+    int nextId = 1;
 
 };
 

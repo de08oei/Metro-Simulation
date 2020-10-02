@@ -65,6 +65,11 @@ void PassengerQueue::enqueue(const Passenger &passenger) //object passed by refe
 {
     inLine.push_back(passenger);
     last = inLine.size() - 1;
+    
+    //below 
+    const Passenger *newPassPtr = &passenger;
+    //newPassPtr = passenger;
+    ptrInLine.push_back(&passenger);
 }
 
 void PassengerQueue::dequeue()

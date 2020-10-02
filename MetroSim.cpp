@@ -34,10 +34,8 @@ void MetroSim::initializeStations(string filename)
             file_found = true;
         }
     }
-    
     //station temp;
     station newStation;
-                    //size 
     for (int i = 0; getline(in, newStation.name); i++ ) {
 
         newStation.stationNum = i + 1;
@@ -50,17 +48,15 @@ void MetroSim::initializeStations(string filename)
         }
         
         newStation.atStation = PassengerQueue();
-        
         allStations.push_back(newStation);
-        
     }
     
     in.close();
-    
 }
 
 void MetroSim::printMap(ostream &output)
 {
+
     int stationsSize = allStations.size();
     for (int i = 0; i < stationsSize; i++) {
         if (allStations[i].trainPresent == true) {
@@ -68,70 +64,88 @@ void MetroSim::printMap(ostream &output)
         }
         else {
             output << "       ";
-        }
-        
+        } 
         output << "[" << allStations[i].stationNum << "] "
                << allStations[i].name << "{";
         allStations[i].atStation.print(cout);
         output << "}" << endl;
         
     }
+
 }
 
 void MetroSim::getDirections(string directionsFile)
 {
+    instruction newInstruction;
     ifstream in;
     in.open(directionsFile);
     
     if (not in.is_open()) {
-        askForDirections();
+        while (newInstruction.metroFinish == false) {
+            newInstruction = askForInstructions();
+            executeInstructions(newInstruction);
+            if (newInstruction.metroFinish == false) {
+                printMap(cout);
+            }
+            
+        }
+        
     }
     else {
-        string direction;
-        getline(in, direction);
-        executeDirections(direction);
+        //getline(in, direction);
+        //execute
     }
     
     in.close();
 }
 
-void MetroSim::askForDirections()
+MetroSim::instruction MetroSim::askForInstructions()
 {
-    string direction = "none";
-    string frontInstruction = " ";
-    string secondInstruction = " ";
-    int fromArg, toArg;
+    instruction direction;
+    char frontInstruction, secondInstruction;
     
-    while (direction != "m f") {
-        cout << "Command? ";
-        
-        getline(cin, direction)
-        
-        executeDirections(direction);
+    cout << "Command? ";
+    cin >> frontInstruction;
+    if (frontInstruction == 'm') {
+        cin >> secondInstruction;
+        if (secondInstruction == 'm') {
+            direction.moveMetro = true;
+        }
+        else if (secondInstruction == 'f') {
+            direction.metroFinish = true;
+        }
     }
+    else if (frontInstruction == 'p') {
+        direction.add = true;
+        cin >> direction.fromHere;
+        cin >> direction.toHere;
+    }
+    
+    return direction;
 }
 
-void MetroSim::executeDirections(string direction)
+void MetroSim::executeInstructions(MetroSim::instruction direction)
 {
-    cerr << "the direction is: " << direction << endl;
-    if (direction == "m m") {
-        cerr << "Move metro";
+    if (direction.moveMetro == true) {
+        cerr << "Move metro" << endl;
     }
-    else if (direction == "m f") {
-        cerr << "Exit " << endl;
+    else if (direction.metroFinish == true) {
+        cout << "Thanks for playing MetroSim. Have a nice day!" << endl;
     }
-    else {
-        string frontLetter;
-        int theFrom;
-        int theTo;
-        
-        cin >> frontLetter;
-        
+    else if (direction.add == true) {
+        cerr << "add passenger" << endl;
+        int fromArg = direction.fromHere;
+        int toArg = direction.toHere;
+        Passenger newPass;
+        int stationInd = fromArg - 1;
+        //station fromStation = allStations.at(stationInd);
+        //PassengerQueue stationQueue = fromStation.atStation;
+        // cerr << "At station " << fromStation.name << endl;
+        newPass = allStations.at(stationInd).atStation.createPassenger(nextId, fromArg, toArg);
+        allStations.at(stationInd).atStation.enqueue(newPass);
+        //allStations.at(stationInd).atStation.print(cout);
+        nextId++;
     }
-}
-
-void MetroSim::addPassengerDirection(string direction)
-{
     
 }
 

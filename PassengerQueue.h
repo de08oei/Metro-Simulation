@@ -25,7 +25,7 @@ class PassengerQueue
         Passenger createPassenger(int id, int from, int to);
         
     private:
-        vector<Passenger> *vectorInLine;
+        vector<const Passenger *> ptrInLine;
         vector<Passenger> inLine; 
         int first;
         int last;
