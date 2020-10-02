@@ -2,9 +2,10 @@
  *
  */
 
-
 #ifndef __PASSENGER_H__
 #define __PASSENGER_H__
+
+#include <ostream>
 
 struct Passenger
 {
@@ -26,7 +27,7 @@ struct Passenger
         }
 
         // TODO: implement the print function in Passenger.cpp
-        void print();
+        void print(std::ostream &output);
 
 };
 

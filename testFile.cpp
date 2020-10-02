@@ -20,6 +20,9 @@ void test_size();
 void test_front();
 //Passenger Testing Functions
 void test_passenger_print();
+//MetroSim Testing Functions 
+void test_initializeStations(string testFile);
+void test_getDirections(string testFile, string directionsFile);
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +33,8 @@ int main(int argc, char *argv[])
     // test_size();
     // test_front();
     // test_passenger_print();
+    test_initializeStations("testStations.txt");
+    test_getDirections("testStations.txt", "Hi");
 	return 0;
 }
 
@@ -61,14 +66,14 @@ void test_enque()
     cout << "***** Testing enqueue() *****" << endl;
     PassengerQueue instanceOne;
     cout << "Original: " << endl;
-    instanceOne.print(); //what should this do?
+    instanceOne.print(cout); //what should this do?
     
     cout << "There should be 2 passengers. [1, 2->3] [2, 3->4]" << endl;
 	Passenger newPass = instanceOne.createPassenger(1,2,3);
     Passenger newPass2 = instanceOne.createPassenger(2,3,4);
 	instanceOne.enqueue(newPass);
 	instanceOne.enqueue(newPass2);
-	instanceOne.print();
+	instanceOne.print(cout);
 }
 
 /* test_dequeue 
@@ -87,14 +92,14 @@ void test_dequeue()
 	instanceOne.enqueue(newPass2);
     instanceOne.enqueue(newPass3);
     cout << "Original: ";
-	instanceOne.print();
+	instanceOne.print(cout);
     
     instanceOne.dequeue();
     cout << "Dequeued once: ";
-    instanceOne.print();
+    instanceOne.print(cout);
     instanceOne.dequeue();
     cout << "Dequeued twice: ";
-    instanceOne.print();
+    instanceOne.print(cout);
 }
 
 /* test_size 
@@ -113,13 +118,13 @@ void test_size()
 	instanceOne.enqueue(newPass2);
     instanceOne.enqueue(newPass3);
     cout << "Original: ";
-	instanceOne.print();
+	instanceOne.print(cout);
     cout << "Size is " << instanceOne.size() << endl;
     
     instanceOne.dequeue();
     instanceOne.dequeue();
     cout << "Dequeued twice: ";
-    instanceOne.print();
+    instanceOne.print(cout);
     cout << "Size is " << instanceOne.size() << endl;
 }
 
@@ -139,7 +144,7 @@ void test_front()
 	instanceOne.enqueue(newPass2);
     instanceOne.enqueue(newPass3);
     
-    instanceOne.front().print();
+    instanceOne.front().print(cout);
 }
 
 /* ******************** Passenger Function Tests ******************** */
@@ -154,8 +159,33 @@ void test_passenger_print()
     cout << "***** Testing passenger class print() *****" << endl;
     PassengerQueue instanceOne;
 	Passenger newPass = instanceOne.createPassenger(1,2,3);
-    newPass.print();
+    newPass.print(cout);
     
     Passenger newPass2 = instanceOne.createPassenger(4,5,64);
-    newPass2.print();
+    newPass2.print(cout);
 }
+
+/* ******************** MetroSims Function Tests ******************** */
+
+void test_initializeStations(string testFile)
+{
+    cout << "***** Testing initializeStations() *****" << endl;
+    MetroSim instanceOne;
+    instanceOne.initializeStations(testFile);
+    instanceOne.printMap(cout);
+}
+
+void test_getDirections(string testFile, string directionsFile)
+{
+    cout << "***** Testing getDirections() *****" << endl;
+    MetroSim instanceOne;
+    instanceOne.initializeStations(testFile);
+    instanceOne.printMap(cout);
+    instanceOne.getDirections(directionsFile);
+}
+
+
+
+
+
+

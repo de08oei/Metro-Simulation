@@ -17,23 +17,45 @@ using namespace std;
 
 // Put any other structs you need here
 
-struct station { //outside or in class
-    string name;
-    int stationNum;
-    PassengerQueue waiting;
-    bool trainPresent;
-};
+
 
 class MetroSim
 {
 public:
-    //create station 
+    MetroSim();
+    ~MetroSim();
+    
+    void initializeStations(string filename);
+    void getDirections(string directionsFile);
+    void askForDirections();
+    //void readDirections();
+    void executeDirections(string direction);
+    
+    //temporary 
+    void printMap(ostream &output);
+    
 
 private:
     
+    struct station { 
+        string name;
+        int stationNum;
+        PassengerQueue atStation;
+        bool trainPresent;
+    };
     
+    struct train {
+        int currentStation = 0;
+        PassengerQueue onBoard = PassengerQueue();
+    };
     
     vector<PassengerQueue> onTrain;
+    vector<station> allStations;
+    train theTrain;
+
+    void moveTrain();
+    void embark();
+    void disembark();
 
 };
 

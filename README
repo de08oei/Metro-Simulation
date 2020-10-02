@@ -18,12 +18,14 @@ Program Purpose:
 This homework assignment handles a running train to accomodate
 passengers arriving/departing a metro. Learn how to design and
 modularize code and work with documented libraries.
+
+
+Acknowledgements: 
 Juliana for helping me with make file 
 Akash for helping me plan 
 Julia for helping me find the reference and plan 
-
-Acknowledgements: 
-
+Daniel for helping me figure out which fucntions should be public or private
+Ryan for helping me with the print input and understanding how it works between files, cout, cerr 
 
 Files: 
 

@@ -73,12 +73,12 @@ void PassengerQueue::dequeue()
     last = inLine.size() - 1;
 }
 
-void PassengerQueue::print()
+void PassengerQueue::print(ostream &output)
 {
     int queueSize = inLine.size();
     for (int i = 0; i < queueSize; i++) {
         Passenger currPass = inLine.at(i);
-        cout << "[" 
+        output << "[" 
              << currPass.id 
              << ", " 
              << currPass.from 
@@ -86,5 +86,5 @@ void PassengerQueue::print()
              << currPass.to 
              << "]";
     }
-    cout << endl;
+
 }

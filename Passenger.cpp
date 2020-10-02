@@ -10,7 +10,7 @@ using namespace std;
 /*
  * Remember to write a complete function contract here!
  */
-void Passenger::print()
+void Passenger::print(ostream &output)
 {
-        cout << "[" << id << ", " << from << "->" << to << "]" << endl;
+        output << "[" << id << ", " << from << "->" << to << "]" << endl;
 }

@@ -18,16 +18,15 @@ class PassengerQueue
         
         Passenger front();
         void dequeue();
-        void enqueue(const Passenger& passenger); //takes in an address to passenger
+        void enqueue(const Passenger& passenger); //takes address to passenger
         int size();
-        void print();
+        void print(ostream &output);
         
-        //void addPassenger(Passenger *toAdd);
         Passenger createPassenger(int id, int from, int to);
         
     private:
         vector<Passenger> *vectorInLine;
-        vector<Passenger> inLine; //vector of pointers to passengers
+        vector<Passenger> inLine; 
         int first;
         int last;
 };
