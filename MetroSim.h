@@ -58,6 +58,7 @@ private:
     
     instruction askForInstructions();
     void executeInstructions(instruction direction);
+    void addPassenger(int addFrom, int addTo, int stationIndex);
     
     vector<PassengerQueue> onTrain;
     vector<station> allStations;

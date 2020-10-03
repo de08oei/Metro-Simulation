@@ -34,7 +34,7 @@ void MetroSim::initializeStations(string filename)
             file_found = true;
         }
     }
-    //station temp;
+    
     station newStation;
     for (int i = 0; getline(in, newStation.name); i++ ) {
 
@@ -56,7 +56,6 @@ void MetroSim::initializeStations(string filename)
 
 void MetroSim::printMap(ostream &output)
 {
-
     int stationsSize = allStations.size();
     for (int i = 0; i < stationsSize; i++) {
         if (allStations[i].trainPresent == true) {
@@ -69,9 +68,7 @@ void MetroSim::printMap(ostream &output)
                << allStations[i].name << "{";
         allStations[i].atStation.print(cout);
         output << "}" << endl;
-        
     }
-
 }
 
 void MetroSim::getDirections(string directionsFile)
@@ -87,9 +84,7 @@ void MetroSim::getDirections(string directionsFile)
             if (newInstruction.metroFinish == false) {
                 printMap(cout);
             }
-            
         }
-        
     }
     else {
         //getline(in, direction);
@@ -134,20 +129,18 @@ void MetroSim::executeInstructions(MetroSim::instruction direction)
     }
     else if (direction.add == true) {
         cerr << "add passenger" << endl;
-        int fromArg = direction.fromHere;
-        int toArg = direction.toHere;
-        Passenger newPass;
-        int stationInd = fromArg - 1;
-        //station fromStation = allStations.at(stationInd);
-        //PassengerQueue stationQueue = fromStation.atStation;
-        // cerr << "At station " << fromStation.name << endl;
-        newPass = allStations.at(stationInd).atStation.createPassenger(nextId, fromArg, toArg);
-        allStations.at(stationInd).atStation.enqueue(newPass);
-        //allStations.at(stationInd).atStation.print(cout);
-        nextId++;
+        // int fromArg = direction.fromHere;
+        // int toArg = direction.toHere;
+        int stationInd = direction.fromHere - 1;
+        addPassenger(direction.fromHere, direction.toHere, stationInd);
     }
-    
 }
 
-
+void MetroSim::addPassenger(int addFrom, int addTo, int stationIndex)
+{
+    Passenger newPass;
+    newPass = allStations.at(stationIndex).atStation.createPassenger(nextId, addFrom, addTo);
+    allStations.at(stationIndex).atStation.enqueue(newPass);
+    nextId++;
+}
 
