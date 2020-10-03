@@ -12,27 +12,28 @@
 
 using namespace std;
 
-// Put any other necessary includes here
-
-
-// Put any other structs you need here
-
-
-
 class MetroSim
 {
 public:
     MetroSim();
     ~MetroSim();
     
-    void initializeStations(string filename);
+    void initializeStations(string newStationName);
     void getDirections(string directionsFile);
+    
+    void printTrain(ostream &output);
+    void printMap(ostream &output);
     
     //void readDirections();
     
     
     //temporary 
-    void printMap(ostream &output);
+    // void printMap(ostream &output);
+    // struct train {
+    //     int currentStation = 0;
+    //     PassengerQueue onBoard = PassengerQueue();
+    // };
+    // train theTrain;
     
 
 private:
@@ -64,11 +65,13 @@ private:
     vector<station> allStations;
     train theTrain;
 
-    void moveMetro();
+    void metroMove();
     void embark();
     void disembark();
     
+    
     int nextId = 1;
+    int numOfStations = 0;
 
 };
 
