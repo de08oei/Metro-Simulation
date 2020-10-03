@@ -174,6 +174,7 @@ void MetroSim::executeInstructions(MetroSim::instruction direction)
 {
     if (direction.moveMetro == true) {
         cerr << "Move metro" << endl;
+        metroMove();
     }
     else if (direction.metroFinish == true) {
         cout << "Thanks for playing MetroSim. Have a nice day!" << endl;
@@ -217,24 +218,28 @@ void MetroSim::metroMove()
 void MetroSim::embark(int station)
 {
     int stationQueueSize = allStations.at(station).atStation.size();
+    cerr << "stationQueueSize" << stationQueueSize << endl;
     for (int i = 0; i < stationQueueSize; i++) {
-        PassengerQueue nextPass = ptrAllStations.at(i)->atStation;
-        //be
-        cerr << "The queue: ";
-        nextPass.print(cout);
-        //ab
-        onTrain.push_back(nextPass);
+        PassengerQueue nextPass = allStations.at(station).atStation.inLine.at(i);
+        theTrain.onBoard.push_back(nextPass);
     }
+    
+    for (int i = 0; i < stationQueueSize + 1; i++) {
+
+        allStations.at(station).atStation.dequeue();
+
+    }
+
 }
 
 void MetroSim::printTrain(ostream &output)
 {
-    int size = onTrain.size();
+    int size = theTrain.onBoard.size();
     output << "Passengers on the train: {";
     
     for (int i = 0; i < size; i++) {
         
-        onTrain.at(i).print(output);
+        theTrain.onBoard.at(i).print(output);
     }
 
     output << "}" << endl;

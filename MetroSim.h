@@ -44,12 +44,11 @@ private:
     
     struct train {
         int currentStation = 0;
-        PassengerQueue onBoard = PassengerQueue();
+        vector<PassengerQueue> onBoard;
     };
 
     void addPassenger(int addFrom, int addTo);
     
-    vector<PassengerQueue> onTrain;
     vector<station> allStations;
     vector<station *> ptrAllStations;
     train theTrain;
