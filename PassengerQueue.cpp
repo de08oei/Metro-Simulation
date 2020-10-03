@@ -76,6 +76,7 @@ void PassengerQueue::dequeue()
 {
     inLine.pop_back();
     last = inLine.size() - 1;
+    ptrInLine.pop_back();
 }
 
 void PassengerQueue::print(ostream &output)
@@ -92,4 +93,19 @@ void PassengerQueue::print(ostream &output)
              << "]";
     }
 
+}
+
+void PassengerQueue::orderPassengers()
+{
+    cerr << "ORdering" << endl;
+    int inLineSize = ptrInLine.size();
+    for (int i = 0; i < inLineSize - 1; i++) {
+        const Passenger *passOne = ptrInLine.at(i);
+        const Passenger *passTwo = ptrInLine.at(i + 1);
+        if (passOne->to > passTwo->to) {
+            const Passenger *temp = passOne;
+            passOne = passTwo;
+            passTwo = temp;
+        }
+    }
 }

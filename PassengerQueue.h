@@ -24,11 +24,14 @@ class PassengerQueue
         
         Passenger createPassenger(int id, int from, int to);
         
+        void orderPassengers();
+        
     private:
         vector<const Passenger *> ptrInLine;
         vector<Passenger> inLine; 
         int first;
         int last;
+        
 };
 
 #endif

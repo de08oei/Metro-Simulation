@@ -56,6 +56,8 @@ private:
     void metroMove();
     void embark(int station);
     void disembark();
+    int nextStationInd(int currentInd);
+    void orderPassengers();
 
     int nextId = 1;
     int numOfStations = 0;

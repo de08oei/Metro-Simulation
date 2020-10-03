@@ -204,9 +204,14 @@ void MetroSim::addPassenger(int addFrom, int addTo)
 void MetroSim::metroMove()
 {
     int trainAtStation = theTrain.currentStation;
-    embark(trainAtStation);
-    //get passengers at current station , embark 
-    //move metro 
+    embark(trainAtStation); //put passengers from station on train 
+    //theTrain.onBoard.orderPassengers();
+    PassengerQueue hey;
+    hey.orderPassengers();
+    allStations.at(trainAtStation).trainPresent = false; //move the train 
+    theTrain.currentStation = nextStationInd(trainAtStation);
+    allStations.at(theTrain.currentStation).trainPresent = true;
+    //rearrange metro
     //disembark 
 }
 
@@ -218,18 +223,14 @@ void MetroSim::metroMove()
 void MetroSim::embark(int station)
 {
     int stationQueueSize = allStations.at(station).atStation.size();
-    cerr << "stationQueueSize" << stationQueueSize << endl;
-    for (int i = 0; i < stationQueueSize; i++) {
-        PassengerQueue nextPass = allStations.at(station).atStation.inLine.at(i);
+    if (stationQueueSize > 0) {
+        PassengerQueue nextPass = allStations.at(station).atStation;
         theTrain.onBoard.push_back(nextPass);
+        
+        for (int i = 0; i < stationQueueSize + 1; i++) {
+            allStations.at(station).atStation.dequeue();
+        }
     }
-    
-    for (int i = 0; i < stationQueueSize + 1; i++) {
-
-        allStations.at(station).atStation.dequeue();
-
-    }
-
 }
 
 void MetroSim::printTrain(ostream &output)
@@ -238,9 +239,24 @@ void MetroSim::printTrain(ostream &output)
     output << "Passengers on the train: {";
     
     for (int i = 0; i < size; i++) {
-        
+
         theTrain.onBoard.at(i).print(output);
     }
 
     output << "}" << endl;
+}
+
+int MetroSim::nextStationInd(int currentInd)
+{
+    int nextInd = currentInd + 1;
+    int totalStations = allStations.size();
+    if (nextInd > totalStations - 1) {
+        nextInd = 0;
+    }
+    return nextInd;
+}
+
+void MetroSim::orderPassengers()
+{
+    
 }
