@@ -22,19 +22,42 @@ void test_front();
 void test_passenger_print();
 //MetroSim Testing Functions 
 void test_initializeStations(string testFile);
-void test_getDirections(string testFile, string directionsFile);
+//void test_getDirections(string testFile, string directionsFile);
 void test_printTrain();
 //Main Testing Functions
 void readInStations(MetroSim *instance, string filename);
+string findDirections(string directionsFile);
+void readInstructions(MetroSim *metroInstance, string directionsFile);
 
 int main(int argc, char *argv[])
 {
 	cerr << "Testing!" << endl;
 	MetroSim *instance = new MetroSim;
 	readInStations(instance, "testStations.txt");
-	instance->printTrain(cout);
-	instance->printMap(cout);
-	instance->getDirections("test_commands.txt");
+	
+	bool quitNow = false;
+	string directionType;
+	directionType = findDirections("test_cfommands.txt");
+	
+	while (quitNow == false) {
+		instance->printTrain(cout);
+		instance->printMap(cout);
+		MetroSim::instruction newInstruction;
+		
+		if (directionType == "user") {
+			newInstruction = instance->askForInstructions();
+			instance->executeInstructions(newInstruction);
+			if (newInstruction.metroFinish == true) {
+				quitNow = true;
+			} 
+		}
+		else {
+			cerr << "Read in file" << endl;
+			quitNow = true;
+			//readInstructions(instance, "test_commands.txt");
+		}
+	}
+
 	
 	// test_enque();
 	// test_createPassenger();
@@ -74,39 +97,53 @@ void readInStations(MetroSim *metroInstance, string filename)
     in.close();
 }
 
-void findDirections(string directionsFile)
+string findDirections(string directionsFile)
 {
-    instruction newInstruction;
+    MetroSim::instruction newInstruction;
     ifstream in;
     in.open(directionsFile);
     
     if (not in.is_open()) {
         cerr << "File not found" << endl;
-        MetroSim::askForInstructions();
+        return "user";
     }
     else {
         cerr << "File found" << endl;
-        instruction direction;
-        char frontInstruction, secondInstruction;
-
-        in >> frontInstruction;
-        if (frontInstruction == 'm') {
-            in >> secondInstruction;
-            if (secondInstruction == 'm') {
-                newInstruction.moveMetro = true;
-            }
-            else if (secondInstruction == 'f') {
-                newInstruction.metroFinish = true;
-            }
-        }
-        else if (frontInstruction == 'p') {
-            newInstruction.add = true;
-            in >> newInstruction.fromHere;
-            in >> newInstruction.toHere;
-        }
-        executeInstructions(newInstruction);
+        return "file";
     }
     
+    in.close();
+}
+
+void readInstructions(MetroSim *metroInstance, string directionsFile)
+{
+	MetroSim::instruction direction;
+
+    char frontInstruction, secondInstruction;
+	
+    ifstream in;
+    in.open(directionsFile);
+    
+	
+		in >> frontInstruction;
+	    if (frontInstruction == 'm') {
+	        in >> secondInstruction;
+	        if (secondInstruction == 'm') {
+	            direction.moveMetro = true;
+	        }
+	        else if (secondInstruction == 'f') {
+	            direction.metroFinish = true;
+	        }
+	    }
+	    else if (frontInstruction == 'p') {
+	        direction.add = true;
+	        in >> direction.fromHere;
+	        in >> direction.toHere;
+	    }
+		
+		metroInstance->executeInstructions(direction);
+	
+	
     in.close();
 }
 
@@ -247,14 +284,14 @@ void test_initializeStations(string testFile)
     instanceOne.printMap(cout);
 }
 
-void test_getDirections(string testFile, string directionsFile)
-{
-    cout << "***** Testing getDirections() *****" << endl;
-    MetroSim instanceOne;
-    instanceOne.initializeStations(testFile);
-    instanceOne.printMap(cout);
-    instanceOne.getDirections(directionsFile);
-}
+// void test_getDirections(string testFile, string directionsFile)
+// {
+//     cout << "***** Testing getDirections() *****" << endl;
+//     MetroSim instanceOne;
+//     instanceOne.initializeStations(testFile);
+//     instanceOne.printMap(cout);
+//     instanceOne.getDirections(directionsFile);
+// }
 
 // void test_printTrain()
 // {

@@ -19,22 +19,19 @@ public:
     ~MetroSim();
     
     void initializeStations(string newStationName);
-    void getDirections(string directionsFile);
+    //void getDirections(string directionsFile);
     
     void printTrain(ostream &output);
     void printMap(ostream &output);
-    
-    //void readDirections();
-    
-    
-    //temporary 
-    // void printMap(ostream &output);
-    // struct train {
-    //     int currentStation = 0;
-    //     PassengerQueue onBoard = PassengerQueue();
-    // };
-    // train theTrain;
-    
+
+    struct instruction {
+        bool moveMetro = false;
+        bool metroFinish = false;
+        bool add = false;
+        int fromHere, toHere;
+    };
+    instruction askForInstructions();
+    void executeInstructions(instruction direction);
 
 private:
     
@@ -49,27 +46,18 @@ private:
         int currentStation = 0;
         PassengerQueue onBoard = PassengerQueue();
     };
-    
-    struct instruction {
-        bool moveMetro = false;
-        bool metroFinish = false;
-        bool add = false;
-        int fromHere, toHere;
-    };
-    
-    instruction askForInstructions();
-    void executeInstructions(instruction direction);
-    void addPassenger(int addFrom, int addTo, int stationIndex);
+
+    void addPassenger(int addFrom, int addTo);
     
     vector<PassengerQueue> onTrain;
     vector<station> allStations;
+    vector<station *> ptrAllStations;
     train theTrain;
 
     void metroMove();
-    void embark();
+    void embark(int station);
     void disembark();
-    
-    
+
     int nextId = 1;
     int numOfStations = 0;
 
