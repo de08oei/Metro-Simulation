@@ -17,6 +17,7 @@ class PassengerQueue
         ~PassengerQueue();
         
         Passenger front();
+        Passenger back();
         void dequeue();
         void enqueue(const Passenger& passenger); //takes address to passenger
         int size();
@@ -26,9 +27,14 @@ class PassengerQueue
         
         void orderPassengers();
         
-    private:
+        //help
         vector<const Passenger *> ptrInLine;
         vector<Passenger> inLine; 
+        
+        
+    private:
+        // vector<const Passenger *> ptrInLine;
+        // vector<Passenger> inLine; 
         int first;
         int last;
         

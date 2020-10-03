@@ -38,7 +38,7 @@ PassengerQueue::~PassengerQueue()
 */
 int PassengerQueue::size()
 {
-    return inLine.size();
+    return ptrInLine.size();
 }
 
 
@@ -50,6 +50,11 @@ int PassengerQueue::size()
 Passenger PassengerQueue::front()
 {
     return inLine.front();
+}
+
+Passenger PassengerQueue::back()
+{
+    return inLine.back();
 }
 
 Passenger PassengerQueue::createPassenger(int id, int from, int to)
@@ -70,6 +75,8 @@ void PassengerQueue::enqueue(const Passenger &passenger) //object passed by refe
     const Passenger *newPassPtr = &passenger;
     //newPassPtr = passenger;
     ptrInLine.push_back(&passenger);
+//    cerr << "NO";
+    //last = ptrInLine.size() + 1;
 }
 
 void PassengerQueue::dequeue()
@@ -77,6 +84,7 @@ void PassengerQueue::dequeue()
     inLine.pop_back();
     last = inLine.size() - 1;
     ptrInLine.pop_back();
+    // last = ptrInLine.size() - 1;
 }
 
 void PassengerQueue::print(ostream &output)
@@ -93,19 +101,29 @@ void PassengerQueue::print(ostream &output)
              << "]";
     }
 
+
 }
 
 void PassengerQueue::orderPassengers()
 {
     cerr << "ORdering" << endl;
     int inLineSize = ptrInLine.size();
+    cerr << "Size: " << inLineSize << endl;
     for (int i = 0; i < inLineSize - 1; i++) {
         const Passenger *passOne = ptrInLine.at(i);
+        cerr << "Pass one: " << passOne->id << endl;
+        
         const Passenger *passTwo = ptrInLine.at(i + 1);
+        cerr << "Pass two: " << passTwo->id << endl;
         if (passOne->to > passTwo->to) {
-            const Passenger *temp = passOne;
-            passOne = passTwo;
-            passTwo = temp;
+            // cerr << "Greateer" << endl;
+            // const Passenger *temp = passOne;
+            // cerr << "Temp" << temp->id << endl;
+            // passOne = passTwo;
+            // cerr << "New pass one " << passOne->id << endl;
+            // passTwo = temp;
+            // cerr << "New pass two " << passTwo->id << endl;
+            swap(passOne, passTwo);
         }
     }
 }

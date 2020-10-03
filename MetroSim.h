@@ -44,7 +44,7 @@ private:
     
     struct train {
         int currentStation = 0;
-        vector<PassengerQueue> onBoard;
+        PassengerQueue onBoard;
     };
 
     void addPassenger(int addFrom, int addTo);
@@ -55,9 +55,8 @@ private:
 
     void metroMove();
     void embark(int station);
-    void disembark();
+    void disembark(int station);
     int nextStationInd(int currentInd);
-    void orderPassengers();
 
     int nextId = 1;
     int numOfStations = 0;

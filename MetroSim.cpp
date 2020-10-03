@@ -173,15 +173,15 @@ MetroSim::instruction MetroSim::askForInstructions()
 void MetroSim::executeInstructions(MetroSim::instruction direction)
 {
     if (direction.moveMetro == true) {
-        cerr << "Move metro" << endl;
         metroMove();
+        direction.moveMetro = false;
     }
     else if (direction.metroFinish == true) {
         cout << "Thanks for playing MetroSim. Have a nice day!" << endl;
     }
     else if (direction.add == true) {
-        cerr << "add passenger" << endl;
         addPassenger(direction.fromHere, direction.toHere);
+        direction.add = false;
     }
 }
 
@@ -194,6 +194,7 @@ void MetroSim::executeInstructions(MetroSim::instruction direction)
 */
 void MetroSim::addPassenger(int addFrom, int addTo)
 {
+    cerr << "add passenger" << endl;
     Passenger newPass;
     int stationIndex = addFrom - 1;
     newPass = allStations.at(stationIndex).atStation.createPassenger(nextId, addFrom, addTo);
@@ -203,16 +204,18 @@ void MetroSim::addPassenger(int addFrom, int addTo)
 
 void MetroSim::metroMove()
 {
+    cerr << "Move metro " << endl;
     int trainAtStation = theTrain.currentStation;
     embark(trainAtStation); //put passengers from station on train 
     //theTrain.onBoard.orderPassengers();
-    PassengerQueue hey;
-    hey.orderPassengers();
+    // PassengerQueue hey;
+    // hey.orderPassengers();
     allStations.at(trainAtStation).trainPresent = false; //move the train 
     theTrain.currentStation = nextStationInd(trainAtStation);
     allStations.at(theTrain.currentStation).trainPresent = true;
+    trainAtStation = theTrain.currentStation;
     //rearrange metro
-    //disembark 
+    disembark(trainAtStation);
 }
 
 /* embark 
@@ -224,25 +227,22 @@ void MetroSim::embark(int station)
 {
     int stationQueueSize = allStations.at(station).atStation.size();
     if (stationQueueSize > 0) {
-        PassengerQueue nextPass = allStations.at(station).atStation;
-        theTrain.onBoard.push_back(nextPass);
-        
-        for (int i = 0; i < stationQueueSize + 1; i++) {
-            allStations.at(station).atStation.dequeue();
+        for (int i = 0; i < stationQueueSize; i++) {
+            Passenger embarker = allStations.at(station).atStation.inLine.at(i);
+            theTrain.onBoard.enqueue(embarker);
         }
-    }
+       
+       for (int i = 0; i < stationQueueSize + 1; i++) {
+           allStations.at(station).atStation.dequeue();
+       }
+   }
 }
 
 void MetroSim::printTrain(ostream &output)
 {
-    int size = theTrain.onBoard.size();
     output << "Passengers on the train: {";
+    theTrain.onBoard.print(output);
     
-    for (int i = 0; i < size; i++) {
-
-        theTrain.onBoard.at(i).print(output);
-    }
-
     output << "}" << endl;
 }
 
@@ -256,7 +256,17 @@ int MetroSim::nextStationInd(int currentInd)
     return nextInd;
 }
 
-void MetroSim::orderPassengers()
+void MetroSim::disembark(int station)
 {
-    
+    bool allGone = false;
+    while (allGone == false) {
+        // cerr << "current station: " << station << endl;
+        // cerr << "Current back to: " << theTrain.onBoard.back().to << endl;
+        if (theTrain.onBoard.back().to == station) {
+            theTrain.onBoard.dequeue();
+        }
+        else {
+            allGone = true;
+        }
+    }
 }

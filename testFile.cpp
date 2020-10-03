@@ -18,6 +18,7 @@ void test_enque();
 void test_dequeue();
 void test_size();
 void test_front();
+void test_orderPassengers();
 //Passenger Testing Functions
 void test_passenger_print();
 //MetroSim Testing Functions 
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
 		instance->printTrain(cout);
 		instance->printMap(cout);
 		MetroSim::instruction newInstruction;
-		
+	
 		if (directionType == "user") {
 			newInstruction = instance->askForInstructions();
 			instance->executeInstructions(newInstruction);
@@ -68,6 +69,7 @@ int main(int argc, char *argv[])
     // test_initializeStations("testStations.txt");
     // test_getDirections("testStations.txt", "Hi");
 	// test_printTrain();
+	// test_orderPassengers();
 	return 0;
 }
 
@@ -182,6 +184,7 @@ void test_enque()
     Passenger newPass2 = instanceOne.createPassenger(2,3,4);
 	instanceOne.enqueue(newPass);
 	instanceOne.enqueue(newPass2);
+	cerr << "enqueued" << endl;
 	instanceOne.print(cout);
 }
 
@@ -254,6 +257,21 @@ void test_front()
     instanceOne.enqueue(newPass3);
     
     instanceOne.front().print(cout);
+}
+
+void test_orderPassengers() {
+	cout << "***** Testing orderPassengers() *****" << endl;
+	PassengerQueue instanceOne;
+	Passenger newPass = instanceOne.createPassenger(1,2,3);
+	Passenger newPass2 = instanceOne.createPassenger(2,3,2);
+	Passenger newPass3 = instanceOne.createPassenger(3,4,5);
+	instanceOne.enqueue(newPass);
+	instanceOne.enqueue(newPass2);
+	instanceOne.enqueue(newPass3);
+
+	instanceOne.print(cout);
+	instanceOne.orderPassengers();
+	instanceOne.print(cout);
 }
 
 /* ******************** Passenger Function Tests ******************** */
