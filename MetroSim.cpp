@@ -225,7 +225,7 @@ void MetroSim::metroMove()
     allStations.at(theTrain.currentStation).trainPresent = true;
     trainAtStation = theTrain.currentStation;
     
-    //disembark(trainAtStation);
+    disembark(trainAtStation);
 }
 
 /* embark 
@@ -293,7 +293,13 @@ void MetroSim::disembark(int station)
 {
     bool allGone = false;
     while (allGone == false) {
-        
+        int carSize = theTrain.onBoard.at(station).size();
+        if (carSize > 0) {
+            for (int i = 0; i < carSize; i++) {
+                theTrain.onBoard.at(station).dequeue();
+            }
+        }
+        allGone = true;
     }
 }
 
