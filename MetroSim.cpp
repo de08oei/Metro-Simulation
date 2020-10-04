@@ -1,6 +1,13 @@
 /*
- *
- */
+*  COMP 15 HW 3 Metro Simulator
+*
+*  MetroSim.cpp
+*
+*  PURPOSE
+*
+*  Deanna Oei 
+*  October 6, 2020 
+*/  
 
 #include <iostream>
 #include <string>
@@ -42,15 +49,14 @@ void MetroSim::initializeStations(string newStationName)
     
     newStation.stationNum = numOfStations;
     
-    if (numOfStations == 0) {
+    if (ptrAllStations.size() == 0) {
         newStation.trainPresent = true;
     }
     else {
         newStation.trainPresent = false;
     }
-
-    newStation.atStation = PassengerQueue();
-    allStations.push_back(newStation);
+    //newStation.atStation.push_back(PassengerQueue());
+    //allStations.push_back(newStation);
     ptrAllStations.push_back(&newStation);
     numOfStations++;
 }
@@ -62,78 +68,63 @@ void MetroSim::initializeStations(string newStationName)
 */
 void MetroSim::printMap(ostream &output)
 {
-    int stationsSize = allStations.size();
-    for (int i = 0; i < stationsSize; i++) {
-        if (allStations[i].trainPresent == true) {
+    // int stationsSize = allStations.size();
+    // for (int i = 0; i < stationsSize; i++) {
+    //     if (allStations[i].trainPresent == true) {
+    //         output << "TRAIN: ";
+    //     }
+    //     else {
+    //         output << "       ";
+    //     } 
+    //     output << "[" 
+    //            << allStations[i].stationNum + 1
+    //            << "] "
+    //            << allStations[i].name 
+    //            << " {";
+    //     int atStationSize = allStations[i].atStation.size();
+    //     cerr << "station size: " << atStationSize << endl;
+    //     if (atStationSize > 0) {
+    //         for (int a = 0; a < atStationSize; a++) {
+    //             station atThisStation = *ptrAllStations.at(i);
+    //             PassengerQueue thisQueue = atThisStation.atStation.at(a);
+    //             thisQueue.print(cout);
+    //         }
+    //     }
+    // 
+    //     output << "}" << endl;
+    // }
+    
+    int stationsSize = ptrAllStations.size();
+    cerr << "stationssize: " << stationsSize << endl;
+    station *theStation = ptrAllStations.at(0);
+    if (theStation->trainPresent == true) {
             output << "TRAIN: ";
         }
-        else {
-            output << "       ";
-        } 
-        output << "[" 
-               << allStations[i].stationNum 
-               << "] "
-               << allStations[i].name 
-               << "{";
-        allStations[i].atStation.print(cout);
-        output << "}" << endl;
-    }
+    // for (int i = 0; i < stationsSize; i++) {
+    //     if (ptrAllStations.at(i)->trainPresent == true) {
+    //         output << "TRAIN: ";
+    //     }
+    //     else {
+    //         output << "       ";
+    //     } 
+    //     output << "[" 
+    //            << ptrAllStations.at(i)->stationNum + 1
+    //            << "] "
+    //            << ptrAllStations.at(i)->name 
+    //            << " {";
+    //     int atStationSize = ptrAllStations.at(i)->atStation.size();
+    //     cerr << "station size: " << atStationSize << endl;
+    //     if (atStationSize > 0) {
+    //         // for (int a = 0; a < atStationSize; a++) {
+    //         //     station atThisStation = *ptrAllStations.at(i);
+    //         //     PassengerQueue thisQueue = atThisStation.atStation.at(a);
+    //         //     thisQueue.print(cout);
+    //         // }
+    //     }
+    // 
+    //     output << "}" << endl;
+    // }
 }
-
-/* getUserInstruction
-*    Purpose: public function that calls private function asking user for 
-* Parameters: None 
-*    Returns: MetroSim::instruction - instruction to execute  
-*/
-// MetroSim::instruction MetroSim::getUserInstruction()
-// {
-//     instruction newInstruction;
-//     newInstruction = askForInstructions();
-//     return newInstruction;
-// }
-
-
-// void MetroSim::getDirections(string directionsFile)
-// {
-//     instruction newInstruction;
-//     ifstream in;
-//     in.open(directionsFile);
-// 
-//     if (not in.is_open()) {
-//         cerr << "File not found" << endl;
-//         while (newInstruction.metroFinish == false) {
-//             newInstruction = askForInstructions();
-//             executeInstructions(newInstruction);
-//             if (newInstruction.metroFinish == false) {
-//                 printMap(cout);
-//             }
-//         }
-//     }
-//     else {
-//         cerr << "File found" << endl;
-//         instruction direction;
-//         char frontInstruction, secondInstruction;
-// 
-//         in >> frontInstruction;
-//         if (frontInstruction == 'm') {
-//             in >> secondInstruction;
-//             if (secondInstruction == 'm') {
-//                 newInstruction.moveMetro = true;
-//             }
-//             else if (secondInstruction == 'f') {
-//                 newInstruction.metroFinish = true;
-//             }
-//         }
-//         else if (frontInstruction == 'p') {
-//             newInstruction.add = true;
-//             in >> newInstruction.fromHere;
-//             in >> newInstruction.toHere;
-//         }
-//         executeInstructions(newInstruction);
-//     }
-// 
-//     in.close();
-// }
 
 /* askForInstructions
 *    Purpose: get user inputted instructions 
@@ -189,33 +180,39 @@ void MetroSim::executeInstructions(MetroSim::instruction direction)
 *    Purpose: add a passenger to a station 
 * Parameters: int addFrom - passenger's original station 
 *             int addTo - passenger's destination station 
-*             int stationIndex - current station being added to 
 *    Returns: None 
 */
 void MetroSim::addPassenger(int addFrom, int addTo)
 {
     cerr << "add passenger" << endl;
-    Passenger newPass;
     int stationIndex = addFrom - 1;
-    newPass = allStations.at(stationIndex).atStation.createPassenger(nextId, addFrom, addTo);
-    allStations.at(stationIndex).atStation.enqueue(newPass);
+    Passenger newPass;
+    PassengerQueue newPQ;
+    newPass = newPQ.createPassenger(nextId, addFrom, addTo);
+    newPQ.enqueue(newPass);
+    allStations.at(stationIndex).atStation.push_back(newPQ);
+    
+    // newPass = allStations.at(stationIndex).atStation.at(addFrom).createPassenger(nextId, addFrom, addTo);
+    // newPQ.enqueue(newPass);
+    // allStations.at(stationIndex).atStation.push_back(newPass);
+    //allStations.at(stationIndex).atStation.enqueue(newPass);
     nextId++;
 }
 
 void MetroSim::metroMove()
 {
-    cerr << "Move metro " << endl;
-    int trainAtStation = theTrain.currentStation;
-    embark(trainAtStation); //put passengers from station on train 
-    //theTrain.onBoard.orderPassengers();
-    // PassengerQueue hey;
-    // hey.orderPassengers();
-    allStations.at(trainAtStation).trainPresent = false; //move the train 
-    theTrain.currentStation = nextStationInd(trainAtStation);
-    allStations.at(theTrain.currentStation).trainPresent = true;
-    trainAtStation = theTrain.currentStation;
-    //rearrange metro
-    disembark(trainAtStation);
+    // cerr << "Move metro " << endl;
+    // int trainAtStation = theTrain.currentStation;
+    // embark(trainAtStation); //put passengers from station on train 
+    // //theTrain.onBoard.orderPassengers();
+    // // PassengerQueue hey;
+    // // hey.orderPassengers();
+    // allStations.at(trainAtStation).trainPresent = false; //move the train 
+    // theTrain.currentStation = nextStationInd(trainAtStation);
+    // allStations.at(theTrain.currentStation).trainPresent = true;
+    // trainAtStation = theTrain.currentStation;
+    // //rearrange metro
+    // disembark(trainAtStation);
 }
 
 /* embark 
@@ -225,23 +222,28 @@ void MetroSim::metroMove()
 */
 void MetroSim::embark(int station)
 {
-    int stationQueueSize = allStations.at(station).atStation.size();
-    if (stationQueueSize > 0) {
-        for (int i = 0; i < stationQueueSize; i++) {
-            Passenger embarker = allStations.at(station).atStation.inLine.at(i);
-            theTrain.onBoard.enqueue(embarker);
-        }
-       
-       for (int i = 0; i < stationQueueSize + 1; i++) {
-           allStations.at(station).atStation.dequeue();
-       }
-   }
+    // int stationQueueSize = allStations.at(station).atStation.size();
+    // cerr << "stationQueueSize" << stationQueueSize << endl;
+    // for (int i = 0; i < stationQueueSize; i++) {
+    //     PassengerQueue nextPass = allStations.at(station).atStation;
+    //     if (stationQueueSize > 0) {
+    //         PassengerQueue nextPass = allStations.at(station).atStation;
+    //         theTrain.onBoard.push_back(nextPass);
+    // 
+    //         for (int i = 0; i < stationQueueSize + 1; i++) {
+    //             allStations.at(station).atStation.dequeue();
+    //         }
+    //     }
+    // }
 }
 
 void MetroSim::printTrain(ostream &output)
 {
     output << "Passengers on the train: {";
-    theTrain.onBoard.print(output);
+    int size = theTrain.onBoard.size();
+    for (int i = 0; i < size; i++) {
+        theTrain.onBoard.at(i).print(output);
+    }
     
     output << "}" << endl;
 }
@@ -258,15 +260,15 @@ int MetroSim::nextStationInd(int currentInd)
 
 void MetroSim::disembark(int station)
 {
-    bool allGone = false;
-    while (allGone == false) {
-        // cerr << "current station: " << station << endl;
-        // cerr << "Current back to: " << theTrain.onBoard.back().to << endl;
-        if (theTrain.onBoard.back().to == station) {
-            theTrain.onBoard.dequeue();
-        }
-        else {
-            allGone = true;
-        }
-    }
+    // bool allGone = false;
+    // while (allGone == false) {
+    //     // cerr << "current station: " << station << endl;
+    //     // cerr << "Current back to: " << theTrain.onBoard.back().to << endl;
+    //     if (theTrain.onBoard.back().to == station) {
+    //         theTrain.onBoard.dequeue();
+    //     }
+    //     else {
+    //         allGone = true;
+    //     }
+    // }
 }

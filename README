@@ -3,7 +3,7 @@
 * Comp 15
 * README
 * Deanna Oei 
-* September 30, 2020
+* October 6, 2020
 *********************************************************/
 
 Compile/run:
@@ -11,7 +11,6 @@ Compile/run:
             make MetroSim
      - run executable with
             ./MetroSim stationsFile passFile [commands]
-
 
 Program Purpose:
 
@@ -26,12 +25,15 @@ Akash for helping me plan
 Julia for helping me find the reference and plan 
 Daniel for helping me figure out which fucntions should be public or private
 Ryan for helping me with the print input and understanding how it works between files, cout, cerr 
+http://www.cplusplus.com/reference/vector/vector/ learn about vectors
+piazza
+How to interact with files in C++ file from comp15
 
 Files: 
 
 main.cpp:
-     STUDENT TO-DO: Main file should be short and handle simple driver
-     functions such as reading in files.
+    Driver file for MetroSim, PassengerQueue, and Passenger classes. Contains
+    main() function, reads in files, and executes the simulation. 
 
 MetroSim.cpp:
      STUDENT TO-DO: Implementation of MetroSim class.  Main
@@ -49,6 +51,9 @@ test_commands.txt:
 
 the_metroSim:
         reference implementation for students to see how 
+        
+README: 
+        This file.
 
 
 Note:  the program should handle all cases.

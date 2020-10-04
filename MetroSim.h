@@ -1,7 +1,12 @@
 /*
- *
- */
-
+*  COMP 15 HW 3 Metro Simulator
+*
+*  MetroSim.h
+*
+*  PURPOSE
+*  Deanna Oei 
+*  October 6, 2020 
+*/  
 #ifndef _METROSIM_H_
 #define _METROSIM_H_
 
@@ -38,13 +43,13 @@ private:
     struct station { 
         string name;
         int stationNum;
-        PassengerQueue atStation;
+        vector<PassengerQueue> atStation;
         bool trainPresent;
     };
     
     struct train {
         int currentStation = 0;
-        PassengerQueue onBoard;
+        vector<PassengerQueue> onBoard;
     };
 
     void addPassenger(int addFrom, int addTo);

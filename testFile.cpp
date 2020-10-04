@@ -1,6 +1,13 @@
 /*
- *
- */
+*  COMP 15 HW 3 Metro Simulator
+*
+*  testFile.cpp
+*
+*  PURPOSE
+*
+*  Deanna Oei 
+*  October 6, 2020 
+*/  
 
 #include <iostream>
 #include <fstream>
@@ -19,6 +26,8 @@ void test_dequeue();
 void test_size();
 void test_front();
 void test_orderPassengers();
+void test_back();
+
 //Passenger Testing Functions
 void test_passenger_print();
 //MetroSim Testing Functions 
@@ -38,7 +47,7 @@ int main(int argc, char *argv[])
 	
 	bool quitNow = false;
 	string directionType;
-	directionType = findDirections("test_cfommands.txt");
+	directionType = findDirections("test_commjands.txt");
 	
 	while (quitNow == false) {
 		instance->printTrain(cout);
@@ -54,22 +63,22 @@ int main(int argc, char *argv[])
 		}
 		else {
 			cerr << "Read in file" << endl;
+			readInstructions(instance, "test_commands.txt");
 			quitNow = true;
-			//readInstructions(instance, "test_commands.txt");
 		}
 	}
 
-	
 	// test_enque();
 	// test_createPassenger();
     // test_dequeue();
     // test_size();
     // test_front();
+	// test_back();
     // test_passenger_print();
     // test_initializeStations("testStations.txt");
-    // test_getDirections("testStations.txt", "Hi");
 	// test_printTrain();
 	// test_orderPassengers();
+	
 	return 0;
 }
 
@@ -126,7 +135,10 @@ void readInstructions(MetroSim *metroInstance, string directionsFile)
     ifstream in;
     in.open(directionsFile);
     
-	
+	while (direction.metroFinish == false) {
+		direction.moveMetro = false;
+		direction.metroFinish = false;
+		direction.add = false;
 		in >> frontInstruction;
 	    if (frontInstruction == 'm') {
 	        in >> secondInstruction;
@@ -144,6 +156,8 @@ void readInstructions(MetroSim *metroInstance, string directionsFile)
 	    }
 		
 		metroInstance->executeInstructions(direction);
+	}
+		
 	
 	
     in.close();
@@ -177,15 +191,16 @@ void test_enque()
     cout << "***** Testing enqueue() *****" << endl;
     PassengerQueue instanceOne;
     cout << "Original: " << endl;
-    instanceOne.print(cout); //what should this do?
+    instanceOne.print(cout); 
     
-    cout << "There should be 2 passengers. [1, 2->3] [2, 3->4]" << endl;
+    cout << "The following should print below: [1, 2->3] [2, 3->4]" << endl;
 	Passenger newPass = instanceOne.createPassenger(1,2,3);
     Passenger newPass2 = instanceOne.createPassenger(2,3,4);
 	instanceOne.enqueue(newPass);
 	instanceOne.enqueue(newPass2);
 	cerr << "enqueued" << endl;
 	instanceOne.print(cout);
+	cout << endl;
 }
 
 /* test_dequeue 
@@ -205,13 +220,16 @@ void test_dequeue()
     instanceOne.enqueue(newPass3);
     cout << "Original: ";
 	instanceOne.print(cout);
+	cout << endl;
     
     instanceOne.dequeue();
     cout << "Dequeued once: ";
     instanceOne.print(cout);
+	cout << endl;
     instanceOne.dequeue();
     cout << "Dequeued twice: ";
     instanceOne.print(cout);
+	cout << endl;
 }
 
 /* test_size 
@@ -272,6 +290,25 @@ void test_orderPassengers() {
 	instanceOne.print(cout);
 	instanceOne.orderPassengers();
 	instanceOne.print(cout);
+}
+
+/* test_back 
+*    Purpose: test back() 
+* Parameters: None 
+*    Returns: None
+*/
+void test_back()
+{
+    cout << "***** Testing back() *****" << endl;
+    PassengerQueue instanceOne;
+	Passenger newPass = instanceOne.createPassenger(1,2,3);
+    Passenger newPass2 = instanceOne.createPassenger(2,3,4);
+    Passenger newPass3 = instanceOne.createPassenger(3,4,5);
+	instanceOne.enqueue(newPass);
+	instanceOne.enqueue(newPass2);
+    instanceOne.enqueue(newPass3);
+    
+    instanceOne.back().print(cout);
 }
 
 /* ******************** Passenger Function Tests ******************** */

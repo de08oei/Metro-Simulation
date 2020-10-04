@@ -1,6 +1,13 @@
 /*
- *
- */
+*  COMP 15 HW 3 Metro Simulator
+*
+*  PassengerQueue.h
+*
+*  PURPS
+*
+*  Deanna Oei 
+*  October 6, 2020 
+*/  
 
 #ifndef _PASSENGERQUEUE_H_
 #define _PASSENGERQUEUE_H_
@@ -29,7 +36,7 @@ class PassengerQueue
         
         //help
         vector<const Passenger *> ptrInLine;
-        vector<Passenger> inLine; 
+        //vector<Passenger> inLine; 
         
         
     private:

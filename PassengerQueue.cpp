@@ -1,4 +1,13 @@
-//STUFF
+/*
+*  COMP 15 HW 3 Metro Simulator
+*
+*  PassengerQueue.cpp
+*
+*  PURPOSE
+*
+*  Deanna Oei 
+*  October 6, 2020 
+*/  
 
 #include <iostream>
 #include <stdexcept>
@@ -49,12 +58,13 @@ int PassengerQueue::size()
 */
 Passenger PassengerQueue::front()
 {
-    return inLine.front();
+    //return inLine.front();
+    return *ptrInLine.front();
 }
 
 Passenger PassengerQueue::back()
 {
-    return inLine.back();
+    return *ptrInLine.back();
 }
 
 Passenger PassengerQueue::createPassenger(int id, int from, int to)
@@ -68,30 +78,30 @@ Passenger PassengerQueue::createPassenger(int id, int from, int to)
 
 void PassengerQueue::enqueue(const Passenger &passenger) //object passed by reference
 {
-    inLine.push_back(passenger);
-    last = inLine.size() - 1;
+    // inLine.push_back(passenger);
+    // last = inLine.size() - 1;
     
     //below 
-    const Passenger *newPassPtr = &passenger;
+    //const Passenger *newPassPtr = &passenger;
     //newPassPtr = passenger;
     ptrInLine.push_back(&passenger);
 //    cerr << "NO";
-    //last = ptrInLine.size() + 1;
+    last = ptrInLine.size() + 1;
 }
 
 void PassengerQueue::dequeue()
 {
-    inLine.pop_back();
-    last = inLine.size() - 1;
+    // inLine.pop_back();
+    // last = inLine.size() - 1;
     ptrInLine.pop_back();
-    // last = ptrInLine.size() - 1;
+    last = ptrInLine.size() - 1;
 }
 
 void PassengerQueue::print(ostream &output)
 {
-    int queueSize = inLine.size();
+    int queueSize = ptrInLine.size();
     for (int i = 0; i < queueSize; i++) {
-        Passenger currPass = inLine.at(i);
+        Passenger currPass = *ptrInLine.at(i);
         output << "[" 
              << currPass.id 
              << ", " 
@@ -107,23 +117,23 @@ void PassengerQueue::print(ostream &output)
 void PassengerQueue::orderPassengers()
 {
     cerr << "ORdering" << endl;
-    int inLineSize = ptrInLine.size();
+    int inLineSize = ptrInLine.size(); //get size for iteration
     cerr << "Size: " << inLineSize << endl;
     for (int i = 0; i < inLineSize - 1; i++) {
-        const Passenger *passOne = ptrInLine.at(i);
+        const Passenger *passOne = ptrInLine.at(i); //get the first passenger 
         cerr << "Pass one: " << passOne->id << endl;
-        
-        const Passenger *passTwo = ptrInLine.at(i + 1);
+    
+        const Passenger *passTwo = ptrInLine.at(i + 1); //get the second passenger
         cerr << "Pass two: " << passTwo->id << endl;
-        if (passOne->to > passTwo->to) {
-            // cerr << "Greateer" << endl;
-            // const Passenger *temp = passOne;
-            // cerr << "Temp" << temp->id << endl;
-            // passOne = passTwo;
-            // cerr << "New pass one " << passOne->id << endl;
-            // passTwo = temp;
-            // cerr << "New pass two " << passTwo->id << endl;
-            swap(passOne, passTwo);
+        if (passOne->to > passTwo->to) { //compare their to's 
+            cerr << "Greateer" << endl;
+            const Passenger *temp = passOne;
+            cerr << "Temp" << temp->id << endl;
+            passOne = passTwo;
+            cerr << "New pass one " << passOne->id << endl;
+            passTwo = temp;
+            cerr << "New pass two " << passTwo->id << endl;
+            // swap(passOne, passTwo);
         }
     }
 }

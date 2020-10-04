@@ -1,6 +1,14 @@
 /*
- *
- */
+*  COMP 15 HW 3 Metro Simulator
+*
+*  main.cpp
+*
+*  Driver file for MetroSim, PassengerQueue, and Passenger classes. Contains
+*  main() function, reads in files, and executes the simulation. 
+*
+*  Deanna Oei 
+*  October 6, 2020 
+*/  
 
  #include <iostream>
  #include <fstream>
