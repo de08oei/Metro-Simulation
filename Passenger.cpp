@@ -12,5 +12,5 @@ using namespace std;
  */
 void Passenger::print(ostream &output)
 {
-        output << "[" << id << ", " << from << "->" << to << "]" << endl;
+        output << "[" << id << ", " << from << "->" << to << "]";
 }

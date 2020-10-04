@@ -35,13 +35,13 @@ class PassengerQueue
         void orderPassengers();
         
         //help
-        vector<const Passenger *> ptrInLine;
-        //vector<Passenger> inLine; 
+        //vector<const Passenger *> ptrInLine;
+        // vector<Passenger> inLine; 
         
         
     private:
         // vector<const Passenger *> ptrInLine;
-        // vector<Passenger> inLine; 
+        vector<Passenger> inLine; 
         int first;
         int last;
         

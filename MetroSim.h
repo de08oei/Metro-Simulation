@@ -37,13 +37,15 @@ public:
     };
     instruction askForInstructions();
     void executeInstructions(instruction direction);
+    
+    void initializeTrain();
 
 private:
     
     struct station { 
         string name;
         int stationNum;
-        vector<PassengerQueue> atStation;
+        vector<Passenger> atStation;
         bool trainPresent;
     };
     

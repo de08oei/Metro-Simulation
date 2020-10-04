@@ -27,7 +27,7 @@ void test_size();
 void test_front();
 void test_orderPassengers();
 void test_back();
-
+void test_passengerQueue_print();
 //Passenger Testing Functions
 void test_passenger_print();
 //MetroSim Testing Functions 
@@ -44,10 +44,13 @@ int main(int argc, char *argv[])
 	cerr << "Testing!" << endl;
 	MetroSim *instance = new MetroSim;
 	readInStations(instance, "testStations.txt");
+	// readInStations(instance, argv[1]);
 	
 	bool quitNow = false;
 	string directionType;
-	directionType = findDirections("test_commjands.txt");
+	//directionType = findDirections(argv[3]);
+	directionType = findDirections("test_commandjs.txt");
+	instance->initializeTrain();
 	
 	while (quitNow == false) {
 		instance->printTrain(cout);
@@ -64,6 +67,8 @@ int main(int argc, char *argv[])
 		else {
 			cerr << "Read in file" << endl;
 			readInstructions(instance, "test_commands.txt");
+			// instance->printTrain(cout);
+			// instance->printMap(cout);
 			quitNow = true;
 		}
 	}
@@ -75,6 +80,7 @@ int main(int argc, char *argv[])
     // test_front();
 	// test_back();
     // test_passenger_print();
+	// test_passengerQueue_print();
     // test_initializeStations("testStations.txt");
 	// test_printTrain();
 	// test_orderPassengers();
@@ -88,20 +94,16 @@ void readInStations(MetroSim *metroInstance, string filename)
 {
     ifstream in; //read in file ifstream = read in, ofstream = out 
     in.open(filename);
-    bool file_found = false;
     
 	if (not in.is_open()) {
 		cerr << "Error: could not open file " << filename;
 		exit(1);
 	}
-	else {
-		file_found = true;
-	}
     
 	string newStationName;
 	
     for (int i = 0; getline(in, newStationName); i++ ) {
-		
+		cerr << "new station name " << newStationName << endl;
         metroInstance->initializeStations(newStationName);
     }
     
@@ -115,11 +117,11 @@ string findDirections(string directionsFile)
     in.open(directionsFile);
     
     if (not in.is_open()) {
-        cerr << "File not found" << endl;
+        cerr << "Directions file not found" << endl;
         return "user";
     }
     else {
-        cerr << "File found" << endl;
+        cerr << "Directions file found" << endl;
         return "file";
     }
     
@@ -157,9 +159,7 @@ void readInstructions(MetroSim *metroInstance, string directionsFile)
 		
 		metroInstance->executeInstructions(direction);
 	}
-		
-	
-	
+
     in.close();
 }
 
@@ -277,20 +277,20 @@ void test_front()
     instanceOne.front().print(cout);
 }
 
-void test_orderPassengers() {
-	cout << "***** Testing orderPassengers() *****" << endl;
-	PassengerQueue instanceOne;
-	Passenger newPass = instanceOne.createPassenger(1,2,3);
-	Passenger newPass2 = instanceOne.createPassenger(2,3,2);
-	Passenger newPass3 = instanceOne.createPassenger(3,4,5);
-	instanceOne.enqueue(newPass);
-	instanceOne.enqueue(newPass2);
-	instanceOne.enqueue(newPass3);
-
-	instanceOne.print(cout);
-	instanceOne.orderPassengers();
-	instanceOne.print(cout);
-}
+// void test_orderPassengers() {
+// 	cout << "***** Testing orderPassengers() *****" << endl;
+// 	PassengerQueue instanceOne;
+// 	Passenger newPass = instanceOne.createPassenger(1,2,3);
+// 	Passenger newPass2 = instanceOne.createPassenger(2,3,2);
+// 	Passenger newPass3 = instanceOne.createPassenger(3,4,5);
+// 	instanceOne.enqueue(newPass);
+// 	instanceOne.enqueue(newPass2);
+// 	instanceOne.enqueue(newPass3);
+// 
+// 	instanceOne.print(cout);
+// 	instanceOne.orderPassengers();
+// 	instanceOne.print(cout);
+// }
 
 /* test_back 
 *    Purpose: test back() 
@@ -309,6 +309,15 @@ void test_back()
     instanceOne.enqueue(newPass3);
     
     instanceOne.back().print(cout);
+}
+
+void test_passengerQueue_print()
+{
+	cout << "***** Testing passengerQueue print() *****" << endl;
+	PassengerQueue instanceOne;
+	Passenger newPass = instanceOne.createPassenger(1,2,3);
+	instanceOne.enqueue(newPass);
+	instanceOne.print(cout);
 }
 
 /* ******************** Passenger Function Tests ******************** */

@@ -23,11 +23,12 @@ Acknowledgements:
 Juliana for helping me with make file 
 Akash for helping me plan 
 Julia for helping me find the reference and plan 
-Daniel for helping me figure out which fucntions should be public or private
+Daniel for helping me figure out which fucntions should be public or private, helping visualize the train
 Ryan for helping me with the print input and understanding how it works between files, cout, cerr 
 http://www.cplusplus.com/reference/vector/vector/ learn about vectors
 piazza
 How to interact with files in C++ file from comp15
+kevin for helping me with initializing the carts in my train
 
 Files: 
 
