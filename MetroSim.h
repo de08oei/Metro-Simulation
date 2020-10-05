@@ -21,7 +21,7 @@ using namespace std;
 class MetroSim
 {
 public:
-    MetroSim();
+    MetroSim(string stations, string outputF, string directions, int args);
     ~MetroSim();
     
     void initializeStations(string newStationName);
@@ -39,6 +39,11 @@ public:
     void executeInstructions(instruction direction);
     
     void initializeTrain();
+    void readInstructions();
+    string findDirections();
+    void readInStations();
+    void userMove();
+
 
 private:
     
@@ -64,10 +69,20 @@ private:
     void embark(int station);
     void disembark(int station);
     int nextStationInd(int currentInd);
-    void writeOutput(int id, string station, string filename);
+    void writeOutput(int id, string station);
+    
+    // void abort(string error_message);
+    // void checkNumArgs();
 
     int nextId = 1;
     int numOfStations = 0;
+    
+    string outputFile;
+    string stationsFile;
+    string directionsFile;
+    int numArgs;
+    
+    ofstream outputObject;
 
 };
 

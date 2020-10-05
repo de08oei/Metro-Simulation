@@ -23,9 +23,13 @@
 * Parameters: None 
 *    Returns: None 
 */
-MetroSim::MetroSim()
+MetroSim::MetroSim(string stations, string outputF, string directions, int args)
 {
-    
+    outputFile = outputF;
+    stationsFile = stations;
+    directionsFile = directions;
+    numArgs = args;
+    outputObject.open(outputFile);
 }
 
 /* Destructor 
@@ -35,7 +39,7 @@ MetroSim::MetroSim()
 */
 MetroSim::~MetroSim()
 {
-    
+    outputObject.close();
 }
 
 /* initializeStations
@@ -151,8 +155,7 @@ void MetroSim::executeInstructions(MetroSim::instruction direction)
 void MetroSim::addPassenger(int addFrom, int addTo)
 {
     int stationIndex = addFrom - 1;
-    PassengerQueue newQueue;
-    Passenger newPass = newQueue.createPassenger(nextId, addFrom, addTo);
+    Passenger newPass(nextId, addFrom, addTo);
     allStations.at(stationIndex).atStation.push_back(newPass);
     
     nextId++;
@@ -165,7 +168,6 @@ void MetroSim::addPassenger(int addFrom, int addTo)
 */
 void MetroSim::metroMove()
 {
-    cerr << "Move metro " << endl;
     int trainAtStation = theTrain.currentStation;
     embark(trainAtStation); //put passengers from station on train 
 
@@ -185,7 +187,6 @@ void MetroSim::metroMove()
 void MetroSim::embark(int station)
 {
     int stationQueueSize = allStations.at(station).atStation.size();
-    cerr << "stationQueueSize" << stationQueueSize << endl;
     
     //go through each passenger at the station 
     for (int i = 0; i < stationQueueSize; i++) {
@@ -194,7 +195,6 @@ void MetroSim::embark(int station)
         //find their destination 
         int destinationInd = embarking.to - 1;
         //add them to the correct passenger queue on the train 
-        cerr << "Their destination idx " << destinationInd << endl;
         theTrain.onBoard.at(destinationInd).enqueue(embarking);
     }
     
@@ -259,7 +259,8 @@ void MetroSim::disembark(int station)
             for (int i = 0; i < carSize; i++) {
                 int id = theTrain.onBoard.at(station).back().id;
                 string stationName = allStations.at(station).name;
-                //writeOutput(id, stationName, argv[2]);
+                
+                writeOutput(id, stationName);
                 theTrain.onBoard.at(station).dequeue();
             }
         }
@@ -267,17 +268,123 @@ void MetroSim::disembark(int station)
     }
 }
 
-void MetroSim::writeOutput(int id, string station, string filename)
+void MetroSim::writeOutput(int id, string station)
 {
-    ofstream output;
-    string line;
+    outputObject << "Passenger "
+                 << id
+                 << " left train at station "
+                 << station 
+                 << endl;
+
+}
+
+/* readInStations
+*    Purpose: set station names according to file of names given
+* Parameters: MetroSim *metroInstance - instance of MetroSim to be working with
+*             string filename  - name of the file with station names 
+*    Returns: None 
+*/
+void MetroSim::readInStations()
+{
+    ifstream in; //read in file ifstream = read in, ofstream = out 
+    in.open(stationsFile);
     
-    output.open(filename);
-    output << "Passenger "
-           << id
-           << " left train at station "
-           << station 
-           << endl;
+	if (not in.is_open()) {
+		cerr << "Error: could not open file " << stationsFile << endl;
+		exit(1);
+	}
     
-    output.close();
+	string newStationName;
+	
+    for (int i = 0; getline(in, newStationName); i++ ) {
+        initializeStations(newStationName);
+    }
+    
+    in.close();
+}
+
+/* findDirections
+*    Purpose: find which kind of input the program will use for directions
+* Parameters: string directionsFile - name of file with directions  
+*    Returns: string - tells if directions will be given by a "file" or "user" 
+*/
+string MetroSim::findDirections()
+{
+    MetroSim::instruction newInstruction;
+    ifstream in;
+    in.open(directionsFile);
+    
+    if (not in.is_open()) {
+        cerr << "Directions file not found" << endl;
+        return "user";
+    }
+    else {
+        cerr << "Directions file found" << endl;
+        return "file";
+    }
+    
+    in.close();
+}
+
+/* readInstructions
+*    Purpose: read and execute directions given by a file 
+* Parameters: MetroSim *metroInstance - instance of MetroSim to work with
+*             string directionsFile - name of file with directions 
+*    Returns: None 
+*/
+void MetroSim::readInstructions()
+{
+	MetroSim::instruction direction;
+
+    char frontInstruction, secondInstruction;
+	
+    ifstream in;
+    in.open(directionsFile);
+    
+	while (direction.metroFinish == false) {
+		direction.moveMetro = false;
+		direction.metroFinish = false;
+		direction.add = false;
+		in >> frontInstruction;
+		if (in.fail()) {
+			direction.metroFinish = true;
+		}
+	    if (frontInstruction == 'm') {
+	        in >> secondInstruction;
+	        if (secondInstruction == 'm') {
+	            direction.moveMetro = true;
+	        }
+	        else if (secondInstruction == 'f') {
+	            direction.metroFinish = true;
+	        }
+	    }
+	    else if (frontInstruction == 'p') {
+	        direction.add = true;
+	        in >> direction.fromHere;
+	        in >> direction.toHere;
+	    }
+		
+        cout << "Command? ";
+		printTrain(cout);
+		printMap(cout);
+		executeInstructions(direction);
+	}
+
+    in.close();
+}
+
+void MetroSim::userMove()
+{
+    bool quitNow = false;
+    while (quitNow == false) {
+        MetroSim::instruction newInstruction;
+        printTrain(cout);
+        printMap(cout);
+        newInstruction = askForInstructions();
+        executeInstructions(newInstruction);
+        if (newInstruction.metroFinish == true) {
+            quitNow = true;
+        } 
+    }
+    
 }
