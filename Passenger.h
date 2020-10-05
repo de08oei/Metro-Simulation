@@ -1,6 +1,13 @@
 /*
- *
- */
+*  COMP 15 HW 3 Metro Simulator
+*
+*  Passenger.h
+*
+*  Interface of Passenger class. Contains definition of struct Passenger.
+*
+*  Deanna Oei 
+*  October 6, 2020 
+*/  
 
 #ifndef __PASSENGER_H__
 #define __PASSENGER_H__

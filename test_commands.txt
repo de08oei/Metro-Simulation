@@ -1,3 +1,13 @@
 m m
-p 3 4
-m f
+p 2 4
+m m
+p 1 4
+m m
+p 5 3
+m m
+m m
+m m
+m m
+m m
+p 4 5
+m m

@@ -3,7 +3,8 @@
 *
 *  PassengerQueue.h
 *
-*  PURPS
+*  Interface of PassengerQueue class. Declares public and private functions 
+*  and member variables of the PassengerQueue class.
 *
 *  Deanna Oei 
 *  October 6, 2020 
@@ -32,15 +33,7 @@ class PassengerQueue
         
         Passenger createPassenger(int id, int from, int to);
         
-        void orderPassengers();
-        
-        //help
-        //vector<const Passenger *> ptrInLine;
-        // vector<Passenger> inLine; 
-        
-        
     private:
-        // vector<const Passenger *> ptrInLine;
         vector<Passenger> inLine; 
         int first;
         int last;

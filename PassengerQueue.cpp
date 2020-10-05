@@ -3,7 +3,9 @@
 *
 *  PassengerQueue.cpp
 *
-*  PURPOSE
+*  Implementation of the PassengerQueue class. Contains definitions of key
+*  functions that allow the user to create, add to, remove from, print, and 
+*  modify passenger queues.
 *
 *  Deanna Oei 
 *  October 6, 2020 
@@ -82,13 +84,7 @@ void PassengerQueue::enqueue(const Passenger &passenger) //object passed by refe
 {
     inLine.push_back(passenger);
     last = inLine.size() - 1;
-    
-    //below 
-    //const Passenger *newPassPtr = &passenger;
-    //newPassPtr = passenger;
-    // ptrInLine.push_back(&passenger);
-//    cerr << "NO";
-    // last = ptrInLine.size() + 1;
+
 }
 
 void PassengerQueue::dequeue()
@@ -101,17 +97,7 @@ void PassengerQueue::dequeue()
 
 void PassengerQueue::print(ostream &output)
 {
-    // int queueSize = ptrInLine.size();
-    // for (int i = 0; i < queueSize; i++) {
-    //     Passenger currPass = *ptrInLine.at(i);
-    //     output << "[" 
-    //          << currPass.id 
-    //          << ", " 
-    //          << currPass.from 
-    //          << "->" 
-    //          << currPass.to 
-    //          << "]";
-    // }
+
     
     int queueSize = inLine.size();
     for (int i = 0; i < queueSize; i++) {
@@ -127,27 +113,3 @@ void PassengerQueue::print(ostream &output)
 
 
 }
-
-// void PassengerQueue::orderPassengers()
-// {
-//     cerr << "ORdering" << endl;
-//     int inLineSize = ptrInLine.size(); //get size for iteration
-//     cerr << "Size: " << inLineSize << endl;
-//     for (int i = 0; i < inLineSize - 1; i++) {
-//         const Passenger *passOne = ptrInLine.at(i); //get the first passenger 
-//         cerr << "Pass one: " << passOne->id << endl;
-// 
-//         const Passenger *passTwo = ptrInLine.at(i + 1); //get the second passenger
-//         cerr << "Pass two: " << passTwo->id << endl;
-//         if (passOne->to > passTwo->to) { //compare their to's 
-//             cerr << "Greateer" << endl;
-//             const Passenger *temp = passOne;
-//             cerr << "Temp" << temp->id << endl;
-//             passOne = passTwo;
-//             cerr << "New pass one " << passOne->id << endl;
-//             passTwo = temp;
-//             cerr << "New pass two " << passTwo->id << endl;
-//             // swap(passOne, passTwo);
-//         }
-//     }
-// }

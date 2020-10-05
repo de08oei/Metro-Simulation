@@ -35,7 +35,8 @@ Thanks to the many TA's who helped me during office hours:
         PassengerQueues.
     Ryan, for helping me understand the input value for print() and how it 
         works between files, cout, and cerr.
-    Kevin, for helping me debug my initializeTrain function. 
+    Kevin, for helping me debug my initializeTrain function write to the output
+        file. 
 
 Files: 
 
