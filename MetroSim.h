@@ -3,7 +3,8 @@
 *
 *  MetroSim.h
 *
-*  PURPOSE
+*  Interface of MetroSim class. Declares the public and private functions and 
+*  member variables of the MetroSim class.
 *  Deanna Oei 
 *  October 6, 2020 
 */  
@@ -24,7 +25,6 @@ public:
     ~MetroSim();
     
     void initializeStations(string newStationName);
-    //void getDirections(string directionsFile);
     
     void printTrain(ostream &output);
     void printMap(ostream &output);
@@ -64,6 +64,7 @@ private:
     void embark(int station);
     void disembark(int station);
     int nextStationInd(int currentInd);
+    void writeOutput(int id, string station, string filename);
 
     int nextId = 1;
     int numOfStations = 0;

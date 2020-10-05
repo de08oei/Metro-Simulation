@@ -3,7 +3,9 @@
 *
 *  MetroSim.cpp
 *
-*  PURPOSE
+*  Implementation of MetroSim class. Includes key functions allowing the user
+*  to create, print, add passengers, execute instructions, and interact with
+*  a metro simulation.
 *
 *  Deanna Oei 
 *  October 6, 2020 
@@ -43,22 +45,6 @@ MetroSim::~MetroSim()
 */
 void MetroSim::initializeStations(string newStationName)
 {
-    //with pointers
-    /*station *newStation = new station;
-    newStation->name = newStationName;    
-    newStation->stationNum = numOfStations;
-    if (ptrAllStations.size() == 0) {
-        cerr << "train present" << endl;
-        newStation->trainPresent = true;
-    }
-    else {
-        cerr << "train not present" << endl;
-        newStation->trainPresent = false;
-    }
-    ptrAllStations.push_back(newStation);
-    numOfStations++;*/
-    //end with pointers
-    
     station newStation;
     newStation.name = newStationName;
     newStation.stationNum = numOfStations;
@@ -81,33 +67,6 @@ void MetroSim::initializeStations(string newStationName)
 */
 void MetroSim::printMap(ostream &output)
 {
-    //with pointers below 
-    // int stationSize = ptrAllStations.size();
-    // for (int i = 0; i < stationSize; i++) {
-    //     station *thisStation = ptrAllStations.at(i);
-    //     if (thisStation->trainPresent == true) {
-    //         output << "TRAIN: ";
-    //     }
-    //     else {
-    //         output << "       ";
-    //     }
-    // 
-    //     output << "["
-    //            << thisStation->stationNum + 1
-    //            << "] "
-    //            << thisStation->name 
-    //            << " {";
-    // 
-    // 
-    //     int stationQueueSize = thisStation->atStation.size();
-    //     //cerr << "Station queue size: " << stationQueueSize << endl;
-    //     for (int a = 0; a < stationQueueSize; a++) {
-    //         thisStation->atStation.at(a).print(cout);
-    //     }
-    //     output << "}" << endl;
-    // }
-    //end with pointers 
-    
     int stationSize = allStations.size();
     for (int i = 0; i < stationSize; i++) {
         if (allStations.at(i).trainPresent == true) {
@@ -191,29 +150,19 @@ void MetroSim::executeInstructions(MetroSim::instruction direction)
 */
 void MetroSim::addPassenger(int addFrom, int addTo)
 {
-    // cerr << "add passenger" << endl;
-    // int stationIndex = addFrom - 1;
-    // station *addAtStation = ptrAllStations.at(stationIndex);
-    // cerr << "adding at station " << addAtStation->name << endl;
-    // PassengerQueue newQueue;
-    // Passenger newPass = newQueue.createPassenger(nextId, addFrom, addTo);
-    // cerr << "new passenger: ";
-    // newPass.print(cout);
-    // newQueue.enqueue(newPass);
-    // newQueue.print(cout);
-    // addAtStation->atStation.push_back(newQueue);
-    // 
-    // nextId++;
-    
     int stationIndex = addFrom - 1;
     PassengerQueue newQueue;
     Passenger newPass = newQueue.createPassenger(nextId, addFrom, addTo);
-    // newQueue.enqueue(newPass);
     allStations.at(stationIndex).atStation.push_back(newPass);
     
     nextId++;
 }
 
+/* metroMove
+*    Purpose: move the metro, passengers leave station and enter train 
+* Parameters: None 
+*    Returns: None 
+*/
 void MetroSim::metroMove()
 {
     cerr << "Move metro " << endl;
@@ -262,12 +211,14 @@ void MetroSim::embark(int station)
 */
 void MetroSim::initializeTrain()
 {
-    //int numStations = allStations.size();
-    //vector<PassengerQueue> initializedPQ(numStations);
     theTrain.onBoard.resize(allStations.size());
 }
 
-
+/* printTrain 
+*    Purpose: print out the train and its passengers
+* Parameters: ostream object  
+*    Returns: None 
+*/
 void MetroSim::printTrain(ostream &output)
 {
     output << "Passengers on the train: {";
@@ -279,6 +230,11 @@ void MetroSim::printTrain(ostream &output)
     output << "}" << endl;
 }
 
+/* nextStationInd
+*    Purpose: provide the index of the next station the train will visit 
+* Parameters: int currentInd - index of the train's current station  
+*    Returns: int - index of the next station the train visits 
+*/
 int MetroSim::nextStationInd(int currentInd)
 {
     int nextInd = currentInd + 1;
@@ -289,6 +245,11 @@ int MetroSim::nextStationInd(int currentInd)
     return nextInd;
 }
 
+/* disembark
+*    Purpose: remove passengers from the station passenger queue 
+* Parameters: int station - index of the station passengers are leaving  
+*    Returns: None 
+*/
 void MetroSim::disembark(int station)
 {
     bool allGone = false;
@@ -296,6 +257,9 @@ void MetroSim::disembark(int station)
         int carSize = theTrain.onBoard.at(station).size();
         if (carSize > 0) {
             for (int i = 0; i < carSize; i++) {
+                int id = theTrain.onBoard.at(station).back().id;
+                string stationName = allStations.at(station).name;
+                //writeOutput(id, stationName, argv[2]);
                 theTrain.onBoard.at(station).dequeue();
             }
         }
@@ -303,3 +267,17 @@ void MetroSim::disembark(int station)
     }
 }
 
+void MetroSim::writeOutput(int id, string station, string filename)
+{
+    ofstream output;
+    string line;
+    
+    output.open(filename);
+    output << "Passenger "
+           << id
+           << " left train at station "
+           << station 
+           << endl;
+    
+    output.close();
+}
