@@ -80,9 +80,11 @@ void MetroSim::printMap(ostream &output)
             output << "       ";
         }
         
-        output << allStations.at(i).name;
-        
-        output << " {";
+        output << "["
+               << allStations.at(i).stationNum + 1
+               << "] "
+               << allStations.at(i).name
+               << " {";
     
         int queueSize = allStations.at(i).atStation.size();
         
@@ -257,11 +259,10 @@ void MetroSim::disembark(int station)
         int carSize = theTrain.onBoard.at(station).size();
         if (carSize > 0) {
             for (int i = 0; i < carSize; i++) {
-                int id = theTrain.onBoard.at(station).back().id;
+                int id = theTrain.onBoard.at(station).front().id;
                 string stationName = allStations.at(station).name;
-                
-                writeOutput(id, stationName);
                 theTrain.onBoard.at(station).dequeue();
+                writeOutput(id, stationName);    
             }
         }
         allGone = true;
@@ -315,11 +316,9 @@ string MetroSim::findDirections()
     in.open(directionsFile);
     
     if (not in.is_open()) {
-        cerr << "Directions file not found" << endl;
         return "user";
     }
     else {
-        cerr << "Directions file found" << endl;
         return "file";
     }
     
@@ -346,10 +345,10 @@ void MetroSim::readInstructions()
 		direction.metroFinish = false;
 		direction.add = false;
 		in >> frontInstruction;
-		if (in.fail()) {
+		if (in.fail() or in.eof()) {
 			direction.metroFinish = true;
 		}
-	    if (frontInstruction == 'm') {
+	    else if (frontInstruction == 'm') {
 	        in >> secondInstruction;
 	        if (secondInstruction == 'm') {
 	            direction.moveMetro = true;
