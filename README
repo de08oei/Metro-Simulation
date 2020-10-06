@@ -14,14 +14,14 @@ Compile/run:
 
 Program Purpose:
 
-This homework assignment handles a running train to accommodate passengers 
+    This homework assignment handles a running train to accommodate passengers 
 arriving at a station, riding the metro, and departing at their destination. 
 The purpose was to design and create an implementation to modularize
 code and work with documented libraries. To accomplish this, this program uses
 vectors of structs and queues.
 
 Acknowledgements: 
-Thank you to Professor Sheldon for his videos on queues and for answering
+    Thank you to Professor Sheldon for his videos on queues and for answering
 questions on the online forum. I learned about vectors from the website:
 http://www.cplusplus.com/reference/vector/vector/. I learned about using 
 files in C++ programs with "How to interact with files in C++" by Matias 
@@ -81,7 +81,10 @@ Passenger.cpp:
 testFile.cpp:
     Test driver file for MetroSim, PassengerQueue, and Passenger classes. 
     Contains main() and functions for unit testing functions among those 3 
-    classes.
+    classes. Functions include: test_enque, test_dequeue, test_size,
+    test_front, test_passengerQueue_print, test_passenger_print,
+    test_initializeStations, test_printTrain, readInStations, findDirections,
+    readInstructions.
 
 stations.txt:
     A file listing example station names.
@@ -91,6 +94,14 @@ textStations.txt:
 
 test_commands.txt:
     Sample list of commands to give the simulator to execute.
+
+output.txt:
+    The output file used for unit testing. Contains a sample output from my
+    most recent test. 
+    
+Makefile:
+    File containing instructions for compiling and linking to create an 
+    executable file.
 
 README: 
     This file.
@@ -114,19 +125,72 @@ Data Structures:
     to enqueue/dequeue, so the elements in the middle cannot be altered easily.
 
 Testing:
+    I started by writing the print function for the Passenger class and tested
+    with test_passenger_print using various inputs. Then, I worked on the 
+    PassengerQueue class functions. I repeated the process with size, front,
+    enqueue, dequeue, and print. I started testing dequeue using a
+    PassengerQueue of size 1. This seemed to work, but when I used a size
+    higher than 1, the last element was disappearing instead of the front. I
+    changed my function to utilize the vector clear and begin built in member
+    functions which worked for multiple element PassengerQueues.
+    
+    While testing my initializingStations function, I noticed that my stations
+    were all being initialized the same number. I had forgotten to increment 
+    the numOfStations variable which counts how many stations are currently on 
+    the map. 
 
-Here describe the following: process of testing (unit tests), mention
-of bugs you encountered while testing, mention of testing on inputs of
-different sizes and edge cases, good description of base cases you
-considered while testing. Demonstrate a methodical approach to
-testing.  This section of your REAMDE should be very thorough for
-homework assignments.
+    While writing printMap, my program would print out large seemingly random 
+    numbers in place of station index numbers. The same thing happened while 
+    writing my print function for PassengerQueues. After talking with a TA at 
+    office hours, I learned it was because I had been using a vector of 
+    pointers to a PassengerQueue and a vector of pointers to a station instead 
+    of an instance of a PassengerQueue and an instance of a station. I switched
+    from a vector of pointers to a normal vector and the print functions 
+    printed out as expected. Majority of the bugs I encountered were actually 
+    the result of my using vectors of pointers instead of normal instances. 
+    addPassenger and printTrain also ran into address and printing issues which
+    were fixed after I changed the vectors. 
+    
+    I had trouble designing a way to tell the program which way to take in 
+    input (user or file), so I created a helper function findDirections. I ran
+    tests with real text file names, fake text file names, and no text file 
+    names to make sure it returned the correct output of “user” or “file”. If 
+    findDirections returned “user”, I ran my userMove function which uses cin 
+    in askForInstructions(). I had temporary cerr statements to make sure the 
+    function was reading the inputs correctly. I used m m, m f, and p # #. A 
+    bug I ran into was that after running m m after p # #, I was not able to 
+    add any more passengers. I use booleans for my instruction struct to say 
+    which kind of command was given. askForInstructions checks if m m or m f 
+    were called first. m m was set to true before and had not been reset, 
+    resulting in the train always moving but not being able to add more 
+    passengers. I fixed this by initializing the booleans in the instructions 
+    struct in MetroSim.h.
+    
+    (instruction struct, printTrain(), printMap(), and executeInstructions() 
+    are all private functions. I made them public temporarily while testing,
+    so they are currently commented out in testFile.cpp)
 
-Note: This homework comes partially implemented, but student must also
-create the driver and add class functionality.
-
-instruction private member var 
-printTrain private function 
-printMap private function 
-executeInstructions private function 
-
+    I had trouble recording to the output file. This was not a problem with my
+    writeOutput function but an issue with how and where I was calling it. I 
+    had writeOutput as a member function of the MetroSim class and the input 
+    for the file name was being provided in main(). I created a member variable
+    outputFile to hold the name of the output file and ofstream object 
+    outputObject to send the records to. 
+    
+    After my implementation seemed to be working, I tested it using different 
+    cases such as adding passengers, moving the metro, and finishing the 
+    program in different orders. I tested the train’s loop to make sure once it
+    leaves the last station, it loops back up to the first station. I added 
+    multiple passengers to station 2 and each gave them different destinations 
+    to leave on. I added multiple passengers who had to wait for the train to 
+    loop to make sure they wouldn’t get lost during the transition. eg in a map
+    of 5 stations, p 3 2 would have to loop until getting to station 2. I 
+    compared this all to the reference implementation to make sure it was 
+    working properly by using diff and printing out the output files to 
+    compare steps taken. A bug I encountered was when my given command file 
+    ended on m m or p # # instead of m f. It would go one more step than the 
+    reference. After going to office hours, I learned that my program would 
+    rerun the last line of the program before ending because it hadn’t been 
+    told it reached the end. I added in.eof so that the program would detect 
+    the end of the line and finish where it left off instead of repeating an 
+    instruction.

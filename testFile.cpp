@@ -27,7 +27,6 @@ void test_enque();
 void test_dequeue();
 void test_size();
 void test_front();
-void test_orderPassengers();
 void test_passengerQueue_print();
 //Passenger Testing Functions
 void test_passenger_print();
@@ -78,7 +77,6 @@ int main(int argc, char *argv[])
 	// test_passengerQueue_print();
     // test_initializeStations("testStations.txt");
 	// test_printTrain();
-	// test_orderPassengers();
 	
 	return 0;
 }
@@ -116,23 +114,23 @@ void readInStations(MetroSim metroInstance, string filename)
 * Parameters: string directionsFile - name of file with directions  
 *    Returns: string - tells if directions will be given by a "file" or "user" 
 */
-string findDirections(string directionsFile)
-{
-    MetroSim::instruction newInstruction;
-    ifstream in;
-    in.open(directionsFile);
-
-    if (not in.is_open()) {
-        cerr << "Directions file not found" << endl;
-        return "user";
-    }
-    else {
-        cerr << "Directions file found" << endl;
-        return "file";
-    }
-
-    in.close();
-}
+// string findDirections(string directionsFile)
+// {
+//     MetroSim::instruction newInstruction;
+//     ifstream in;
+//     in.open(directionsFile);
+// 
+//     if (not in.is_open()) {
+//         cerr << "Directions file not found" << endl;
+//         return "user";
+//     }
+//     else {
+//         cerr << "Directions file found" << endl;
+//         return "file";
+//     }
+// 
+//     in.close();
+// }
 
 /* readInstructions
 *    Purpose: read and execute directions given by a file 
@@ -140,45 +138,45 @@ string findDirections(string directionsFile)
 *             string directionsFile - name of file with directions 
 *    Returns: None 
 */
-void readInstructions(MetroSim metroInstance, string directionsFile)
-{
-	MetroSim::instruction direction;
-
-    char frontInstruction, secondInstruction;
-
-    ifstream in;
-    in.open(directionsFile);
-
-	while (direction.metroFinish == false) {
-		direction.moveMetro = false;
-		direction.metroFinish = false;
-		direction.add = false;
-		in >> frontInstruction;
-		if (in.fail()) {
-			direction.metroFinish = true;
-		}
-	    if (frontInstruction == 'm') {
-	        in >> secondInstruction;
-	        if (secondInstruction == 'm') {
-	            direction.moveMetro = true;
-	        }
-	        else if (secondInstruction == 'f') {
-	            direction.metroFinish = true;
-	        }
-	    }
-	    else if (frontInstruction == 'p') {
-	        direction.add = true;
-	        in >> direction.fromHere;
-	        in >> direction.toHere;
-	    }
-
-		metroInstance.printTrain(cout);
-		metroInstance.printMap(cout);
-		metroInstance.executeInstructions(direction);
-	}
-
-    in.close();
-}
+// void readInstructions(MetroSim metroInstance, string directionsFile)
+// {
+// 	MetroSim::instruction direction;
+// 
+//     char frontInstruction, secondInstruction;
+// 
+//     ifstream in;
+//     in.open(directionsFile);
+// 
+// 	while (direction.metroFinish == false) {
+// 		direction.moveMetro = false;
+// 		direction.metroFinish = false;
+// 		direction.add = false;
+// 		in >> frontInstruction;
+// 		if (in.fail()) {
+// 			direction.metroFinish = true;
+// 		}
+// 	    if (frontInstruction == 'm') {
+// 	        in >> secondInstruction;
+// 	        if (secondInstruction == 'm') {
+// 	            direction.moveMetro = true;
+// 	        }
+// 	        else if (secondInstruction == 'f') {
+// 	            direction.metroFinish = true;
+// 	        }
+// 	    }
+// 	    else if (frontInstruction == 'p') {
+// 	        direction.add = true;
+// 	        in >> direction.fromHere;
+// 	        in >> direction.toHere;
+// 	    }
+// 
+// 		metroInstance.printTrain(cout);
+// 		metroInstance.printMap(cout);
+// 		metroInstance.executeInstructions(direction);
+// 	}
+// 
+//     in.close();
+// }
 
 /* test_createPassenger
 *    Purpose: test createPassenger()
@@ -331,5 +329,5 @@ void test_initializeStations(string testFile)
     cout << "***** Testing initializeStations() *****" << endl;
     MetroSim instanceOne("a1", "a2", "a3", 1);
     instanceOne.initializeStations(testFile);
-    instanceOne.printMap(cout);
+    //instanceOne.printMap(cout);
 }
