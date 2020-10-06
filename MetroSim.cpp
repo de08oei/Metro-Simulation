@@ -19,8 +19,13 @@
 #include "MetroSim.h"
 
 /* Default Constructor 
-*    Purpose: initialize MetroSim class 
-* Parameters: None 
+*    Purpose: initialize MetroSim class and opens output file 
+* Parameters: string stations   - name of file with station names
+*             string outputF    - name of file to print output to
+*             string directions - name of file with directions to control the
+*                                 simulation
+*             int args          - number of arguments the user provides when 
+*                                 starting the simulation 
 *    Returns: None 
 */
 MetroSim::MetroSim(string stations, string outputF, string directions, int args)
@@ -33,7 +38,8 @@ MetroSim::MetroSim(string stations, string outputF, string directions, int args)
 }
 
 /* Destructor 
-*    Purpose: recycle memory associated with MetroSim class 
+*    Purpose: recycles memory associated with MetroSim class,
+*             closes output file
 * Parameters: None 
 *    Returns: None 
 */
@@ -43,8 +49,8 @@ MetroSim::~MetroSim()
 }
 
 /* initializeStations
-*    Purpose: initialize station and push into allStations
-* Parameters: string newStationName - name of new station being pushed 
+*    Purpose: create/initialize a station and push into vector allStations
+* Parameters: string newStationName - name of new station being added 
 *    Returns: None 
 */
 void MetroSim::initializeStations(string newStationName)
@@ -66,13 +72,15 @@ void MetroSim::initializeStations(string newStationName)
 
 /* printMap
 *    Purpose: print out map of stations and passengers in queue 
-* Parameters: ostream object  
+* Parameters: ostream &output - reference to ostream object  
 *    Returns: None 
 */
 void MetroSim::printMap(ostream &output)
 {
     int stationSize = allStations.size();
-    for (int i = 0; i < stationSize; i++) {
+    
+    //iterate through each station 
+    for (int i = 0; i < stationSize; i++) { 
         if (allStations.at(i).trainPresent == true) {
             output << "TRAIN: ";
         }
@@ -88,14 +96,14 @@ void MetroSim::printMap(ostream &output)
     
         int queueSize = allStations.at(i).atStation.size();
         
-        for (int a = 0; a < queueSize; a++) {
+        //iterate through each passenger at the current station 
+        for (int a = 0; a < queueSize; a++) { 
             allStations.at(i).atStation.at(a).print(cout);
         }
     
         output << "}"
                << endl;
-    }
-    
+    }    
 }
 
 /* askForInstructions
@@ -110,7 +118,7 @@ MetroSim::instruction MetroSim::askForInstructions()
     
     cout << "Command? ";
     cin >> frontInstruction;
-    if (frontInstruction == 'm') {
+    if (frontInstruction == 'm') {          //handles "m m" and "m f" commands 
         cin >> secondInstruction;
         if (secondInstruction == 'm') {
             direction.moveMetro = true;
@@ -119,7 +127,7 @@ MetroSim::instruction MetroSim::askForInstructions()
             direction.metroFinish = true;
         }
     }
-    else if (frontInstruction == 'p') {
+    else if (frontInstruction == 'p') {     //handles "p" commands 
         direction.add = true;
         cin >> direction.fromHere;
         cin >> direction.toHere;
@@ -129,7 +137,7 @@ MetroSim::instruction MetroSim::askForInstructions()
 }
 
 /* executeInstructions
-*    Purpose: execute instructions 
+*    Purpose: execute a single instruction
 * Parameters: MetroSim::instruction direction - instruction to be executed 
 *    Returns: None 
 */
@@ -171,19 +179,23 @@ void MetroSim::addPassenger(int addFrom, int addTo)
 void MetroSim::metroMove()
 {
     int trainAtStation = theTrain.currentStation;
-    embark(trainAtStation); //put passengers from station on train 
+    
+    //move passengers from current station onto train 
+    embark(trainAtStation); 
 
-    allStations.at(trainAtStation).trainPresent = false; //move the train 
+    //move the train 
+    allStations.at(trainAtStation).trainPresent = false; 
     theTrain.currentStation = nextStationInd(trainAtStation);
     allStations.at(theTrain.currentStation).trainPresent = true;
     trainAtStation = theTrain.currentStation;
     
-    disembark(trainAtStation);
+    //remove passengers who have reached their destination
+    disembark(trainAtStation); 
 }
 
 /* embark 
 *    Purpose: get Passengers from current station onto train's PassengerQueue
-* Parameters: None 
+* Parameters: int station - index of station passengers are boarding from 
 *    Returns: None 
 */
 void MetroSim::embark(int station)
@@ -200,6 +212,7 @@ void MetroSim::embark(int station)
         theTrain.onBoard.at(destinationInd).enqueue(embarking);
     }
     
+    //remove passengers from current station b/c they just boarded the train
     for (int i = 0; i < stationQueueSize; i++) {
         allStations.at(station).atStation.pop_back();
     }
@@ -218,7 +231,7 @@ void MetroSim::initializeTrain()
 
 /* printTrain 
 *    Purpose: print out the train and its passengers
-* Parameters: ostream object  
+* Parameters: ostream &output - reference to ostream object  
 *    Returns: None 
 */
 void MetroSim::printTrain(ostream &output)
@@ -256,12 +269,15 @@ void MetroSim::disembark(int station)
 {
     bool allGone = false;
     while (allGone == false) {
+        //find how many passengers are to disembark at this station 
         int carSize = theTrain.onBoard.at(station).size();
         if (carSize > 0) {
             for (int i = 0; i < carSize; i++) {
                 int id = theTrain.onBoard.at(station).front().id;
                 string stationName = allStations.at(station).name;
+                //passenger disembarks 
                 theTrain.onBoard.at(station).dequeue();
+                //record to output
                 writeOutput(id, stationName);    
             }
         }
@@ -269,6 +285,12 @@ void MetroSim::disembark(int station)
     }
 }
 
+/* writeOutput
+*    Purpose: record which passenger leaves the train and at which station 
+* Parameters: int id         - id number of the passenger leaving 
+*             string station - name of the station the passenger left at 
+*    Returns: None 
+*/
 void MetroSim::writeOutput(int id, string station)
 {
     outputObject << "Passenger "
@@ -276,18 +298,16 @@ void MetroSim::writeOutput(int id, string station)
                  << " left train at station "
                  << station 
                  << endl;
-
 }
 
 /* readInStations
 *    Purpose: set station names according to file of names given
-* Parameters: MetroSim *metroInstance - instance of MetroSim to be working with
-*             string filename  - name of the file with station names 
+* Parameters: None
 *    Returns: None 
 */
 void MetroSim::readInStations()
 {
-    ifstream in; //read in file ifstream = read in, ofstream = out 
+    ifstream in;
     in.open(stationsFile);
     
 	if (not in.is_open()) {
@@ -306,7 +326,7 @@ void MetroSim::readInStations()
 
 /* findDirections
 *    Purpose: find which kind of input the program will use for directions
-* Parameters: string directionsFile - name of file with directions  
+* Parameters: None
 *    Returns: string - tells if directions will be given by a "file" or "user" 
 */
 string MetroSim::findDirections()
@@ -327,25 +347,22 @@ string MetroSim::findDirections()
 
 /* readInstructions
 *    Purpose: read and execute directions given by a file 
-* Parameters: MetroSim *metroInstance - instance of MetroSim to work with
-*             string directionsFile - name of file with directions 
+* Parameters: None 
 *    Returns: None 
 */
 void MetroSim::readInstructions()
 {
 	MetroSim::instruction direction;
-
     char frontInstruction, secondInstruction;
-	
     ifstream in;
     in.open(directionsFile);
-    
 	while (direction.metroFinish == false) {
-		direction.moveMetro = false;
+		direction.moveMetro = false;        //initialize instruction
 		direction.metroFinish = false;
 		direction.add = false;
 		in >> frontInstruction;
-		if (in.fail() or in.eof()) {
+        bool condition1 = in.fail() or in.eof();
+		if (condition1 or secondInstruction == 'f') {
 			direction.metroFinish = true;
 		}
 	    else if (frontInstruction == 'm') {
@@ -353,25 +370,25 @@ void MetroSim::readInstructions()
 	        if (secondInstruction == 'm') {
 	            direction.moveMetro = true;
 	        }
-	        else if (secondInstruction == 'f') {
-	            direction.metroFinish = true;
-	        }
 	    }
 	    else if (frontInstruction == 'p') {
 	        direction.add = true;
 	        in >> direction.fromHere;
 	        in >> direction.toHere;
 	    }
-		
         cout << "Command? ";
 		printTrain(cout);
 		printMap(cout);
 		executeInstructions(direction);
 	}
-
     in.close();
 }
 
+/* userMove
+*    Purpose: execute user inputted instructions
+* Parameters: None 
+*    Returns: None 
+*/
 void MetroSim::userMove()
 {
     bool quitNow = false;
@@ -385,5 +402,4 @@ void MetroSim::userMove()
             quitNow = true;
         } 
     }
-    
 }

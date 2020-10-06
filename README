@@ -14,9 +14,9 @@ Compile/run:
 
 Program Purpose:
 
-This homework assignment handles a running train to accomodate passengers 
-arriving at a station, riding the metro, and departing at their destination
-station. The purpose was to design and create an implementation to modularize
+This homework assignment handles a running train to accommodate passengers 
+arriving at a station, riding the metro, and departing at their destination. 
+The purpose was to design and create an implementation to modularize
 code and work with documented libraries. To accomplish this, this program uses
 vectors of structs and queues.
 
@@ -27,46 +27,41 @@ http://www.cplusplus.com/reference/vector/vector/. I learned about using
 files in C++ programs with "How to interact with files in C++" by Matias 
 Korman, Supriya Sanjay, Ranjit Thomas, and Professor Sheldon. 
 Thanks to the many TA's who helped me during office hours:
-    Juliana, for helping me with my make file.
-    Akash, for helping me plan out my program at the beginning.
-    Julia, for helping me make a clearer plan after getting started.
-    Daniel, for helping me figure out which functions should be public or 
+    Juliana - for helping me with my make file.
+    Akash - for helping me plan out my program at the beginning.
+    Julia - for helping me make a clearer plan after getting started.
+    Daniel - for helping me figure out which functions should be public or 
         private and for helping me visualize the train with its list of 
         PassengerQueues.
-    Ryan, for helping me understand the input value for print() and how it 
+    Ryan - for helping me understand the input value for print() and how it 
         works between files, cout, and cerr.
-    Kevin, for helping me debug my initializeTrain function write to the output
-        file. 
+    Kevin - for helping me debug my initializeTrain function write to the 
+        output file. 
+    Mateo - for helping me figure out which functions should be in my main.cpp
+        and which should be in my MetroSim.cpp.
+    Elise - for helping me figure out why my program was executing one more
+        metro move than it was supposed to.
 
 Files: 
 
 main.cpp:
     Driver file for MetroSim, PassengerQueue, and Passenger classes. Contains
-    main() function, reads in files, and executes the simulation. Includes 
-    functions: readInStations, findDirections, readInstructions.
-
-MetroSim.cpp:
-     Implementation of MetroSim class. Includes key functions allowing the user
-     to interact with a metro simulation. Deals with passengers going on/off 
-     the train. Functions include: default constructor, destructor, 
-     initializeStations, printTrain, printMap, askForInstructions,
-     executeInstructions, initializeTrain, addPassenger, metroMove, embark,
-     disembark, nextStationInd, writeOutput.
-     Also includes structs instruction, station, train.
+    main() function, reads in files, and executes the simulation.
 
 MetroSim.h:
     Interface of MetroSim class. Declares the public and private functions and 
     member variables of the MetroSim class.
-
-stations.txt:
-        A file listing example station names.
-
-test_commands.txt:
-        Sample list of commands to give the simulator to execute.
-
-the_metroSim:
-        Reference implementation for students to see how MetroSim works.
         
+MetroSim.cpp:
+    Implementation of MetroSim class. Includes key functions allowing the user
+    to interact with a metro simulation. Deals with passengers going on/off 
+    the train. Functions include: default constructor, destructor, 
+    initializeStations, printTrain, printMap, askForInstructions,
+    executeInstructions, initializeTrain, addPassenger, metroMove, embark,
+    disembark, nextStationInd, writeOutput, readInStations, findDirections, 
+    readInstructions.
+    Also includes struct definitions: instruction, station, train.
+
 PassengerQueue.h:
     Interface of PassengerQueue class. Declares public and private functions 
     and member variables of the PassengerQueue class.
@@ -82,9 +77,23 @@ Passenger.h:
 
 Passenger.cpp:
     Implementation of the Passenger class. Contains function print().
+
+testFile.cpp:
+    Test driver file for MetroSim, PassengerQueue, and Passenger classes. 
+    Contains main() and functions for unit testing functions among those 3 
+    classes.
+
+stations.txt:
+    A file listing example station names.
         
+textStations.txt:
+    A file listing 5 example station names used for unit testing.
+
+test_commands.txt:
+    Sample list of commands to give the simulator to execute.
+
 README: 
-        This file.
+    This file.
 
 Data Structures:
     The data structures used in this program were vectors and queues. An 
@@ -101,7 +110,7 @@ Data Structures:
     it's easy to access and modify the elements at the end of the queue. 
     Elements in the queue are ordered and the size does not have to be 
     allocated beforehand like arrays. A disadvantage is that it's difficult 
-    to access elements that are not at the ends. Queues main functionality is
+    to access elements that are not at the ends. Queues' main functionality is
     to enqueue/dequeue, so the elements in the middle cannot be altered easily.
 
 Testing:
@@ -115,3 +124,9 @@ homework assignments.
 
 Note: This homework comes partially implemented, but student must also
 create the driver and add class functionality.
+
+instruction private member var 
+printTrain private function 
+printMap private function 
+executeInstructions private function 
+

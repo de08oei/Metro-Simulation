@@ -18,7 +18,7 @@ using namespace std;
 /* print 
 *    Purpose: print out a passenger's information such as id, initial station,
 *             and destination station
-* Parameters: ostream object output  
+* Parameters: ostream &output - reference to ostream object  
 *    Returns: None 
 */
 void Passenger::print(ostream &output)

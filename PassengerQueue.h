@@ -25,19 +25,15 @@ class PassengerQueue
         ~PassengerQueue();
         
         Passenger front();
-        Passenger back();
         void dequeue();
-        void enqueue(const Passenger& passenger); //takes address to passenger
+        void enqueue(const Passenger& passenger); 
         int size();
         void print(ostream &output);
-        
-        Passenger createPassenger(int id, int from, int to);
         
     private:
         vector<Passenger> inLine; 
         int first;
         int last;
-        
 };
 
 #endif

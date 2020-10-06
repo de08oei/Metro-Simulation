@@ -33,7 +33,6 @@ struct Passenger
                 to   = departureStation;
         }
 
-        // TODO: implement the print function in Passenger.cpp
         void print(std::ostream &output);
 
 };

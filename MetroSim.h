@@ -25,25 +25,11 @@ public:
     ~MetroSim();
     
     void initializeStations(string newStationName);
-    
-    void printTrain(ostream &output);
-    void printMap(ostream &output);
-
-    struct instruction {
-        bool moveMetro = false;
-        bool metroFinish = false;
-        bool add = false;
-        int fromHere, toHere;
-    };
-    instruction askForInstructions();
-    void executeInstructions(instruction direction);
-    
     void initializeTrain();
     void readInstructions();
     string findDirections();
     void readInStations();
     void userMove();
-
 
 private:
     
@@ -58,21 +44,27 @@ private:
         int currentStation = 0;
         vector<PassengerQueue> onBoard;
     };
-
-    void addPassenger(int addFrom, int addTo);
+    
+    struct instruction {
+        bool moveMetro = false;
+        bool metroFinish = false;
+        bool add = false;
+        int fromHere, toHere;
+    };
     
     vector<station> allStations;
-    vector<station *> ptrAllStations;
     train theTrain;
-
+    
+    void printTrain(ostream &output);
+    void printMap(ostream &output);
+    instruction askForInstructions();
+    void executeInstructions(instruction direction);
+    void addPassenger(int addFrom, int addTo);
     void metroMove();
     void embark(int station);
     void disembark(int station);
     int nextStationInd(int currentInd);
     void writeOutput(int id, string station);
-    
-    // void abort(string error_message);
-    // void checkNumArgs();
 
     int nextId = 1;
     int numOfStations = 0;
@@ -83,7 +75,6 @@ private:
     int numArgs;
     
     ofstream outputObject;
-
 };
 
 #endif
